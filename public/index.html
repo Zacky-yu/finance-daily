@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐉 小龙财经日报 · 实时版</title>
+<style>
+:root {
+  --bg: #0f1419;
+  --card: #1a2634;
+  --card-hover: #243447;
+  --border: #2f3f4f;
+  --text: #e7e9ea;
+  --text-muted: #8899a6;
+  --text-dim: #536471;
+  --accent: #4fd1c5;
+  --pink: #f472b6;
+  --gold: #ffc107;
+  --red: #ef4444;
+  --green: #22c55e;
+  --orange: #ff9800;
+  --blue: #42a5f5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+
+/* Header */
+header {
+  text-align: center; margin-bottom: 24px; padding: 20px;
+  background: linear-gradient(135deg, #1a2634, #0d3248);
+  border-radius: 14px; position: relative;
+}
+header h1 { font-size: 1.6em; color: var(--accent); margin-bottom: 4px; }
+header .subtitle { color: var(--text-muted); font-size: 0.85em; }
+header .status-bar {
+  display: flex; justify-content: center; align-items: center; gap: 16px;
+  margin-top: 10px; flex-wrap: wrap;
+}
+header .update-time { color: var(--gold); font-size: 0.78em; }
+header .refresh-btn {
+  background: var(--accent); color: #0f1419; border: none;
+  padding: 5px 14px; border-radius: 20px; font-size: 0.78em;
+  cursor: pointer; font-weight: 600; transition: all 0.2s;
+}
+header .refresh-btn:hover { background: #5eead4; transform: scale(1.03); }
+header .refresh-btn:disabled { opacity: 0.5; cursor: wait; }
+header .auto-status { font-size: 0.72em; color: var(--text-dim); }
+
+/* Section */
+.section { margin-bottom: 24px; }
+.section-title {
+  font-size: 1.1em; color: var(--accent); margin-bottom: 10px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* Grids */
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin-bottom: 12px; }
+.grid-5 { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 12px; }
+
+/* Cards */
+.card {
+  background: var(--card); border-radius: 10px; padding: 10px 12px;
+  transition: background 0.2s;
+}
+.card:hover { background: var(--card-hover); }
+.card .label { font-size: 0.78em; color: var(--text-muted); }
+.card .value { font-size: 1.05em; font-weight: 600; margin: 3px 0; }
+.card .sub { font-size: 0.78em; }
+.card-tag {
+  display: inline-block; padding: 1px 7px; border-radius: 6px;
+  font-size: 0.68em; font-weight: 600; margin-right: 4px;
+}
+.tag-semi { background: rgba(79,209,197,0.15); color: var(--accent); }
+.tag-storage { background: rgba(244,114,182,0.15); color: var(--pink); }
+.tag-gold { background: rgba(255,193,7,0.15); color: var(--gold); }
+.tag-market { background: rgba(66,165,245,0.15); color: var(--blue); }
+.tag-hot { background: rgba(255,152,0,0.15); color: var(--orange); }
+
+.up { color: var(--red); }
+.down { color: var(--green); }
+.flat { color: var(--text-muted); }
+
+/* Stock table */
+.stock-table { background: var(--card); border-radius: 10px; overflow: hidden; }
+.stock-row {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 8px 14px; border-bottom: 1px solid var(--border);
+  align-items: center; font-size: 0.85em;
+}
+.stock-row:last-child { border-bottom: none; }
+.stock-row:hover { background: var(--card-hover); }
+.stock-row.header-row {
+  color: var(--text-dim); font-size: 0.75em;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.stock-row .name { font-weight: 500; }
+.stock-row .code { color: var(--text-dim); font-size: 0.78em; margin-left: 4px; }
+.stock-row .tag-sm { font-size: 0.68em; color: var(--text-dim); margin-left: 6px; }
+
+/* News */
+.news-item {
+  background: var(--card); border-radius: 10px; padding: 12px 14px;
+  margin-bottom: 6px; transition: background 0.2s;
+}
+.news-item:hover { background: var(--card-hover); }
+.news-item .news-title { font-size: 0.9em; color: #fff; margin-bottom: 4px; font-weight: 500; }
+.news-item .news-title a { color: var(--accent); text-decoration: none; }
+.news-item .news-title a:hover { text-decoration: underline; }
+.news-item .news-meta { font-size: 0.74em; color: var(--text-dim); display: flex; gap: 10px; flex-wrap: wrap; }
+.news-item .news-desc { font-size: 0.8em; color: #b0bec5; margin-top: 5px; }
+
+/* Stock section headers */
+.sub-section-title {
+  font-size: 0.92em; margin: 10px 0 6px; padding-left: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* Analysis box */
+.analysis-box {
+  background: linear-gradient(135deg, #1a2634, #1a2a30);
+  border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;
+  margin: 8px 0; font-size: 0.82em; color: #b0bec5; line-height: 1.7;
+}
+.analysis-box .a-title { color: var(--accent); font-weight: 600; font-size: 0.88em; margin-bottom: 5px; }
+
+/* Recommendation */
+.recommend {
+  background: linear-gradient(135deg, #1a2a3a, #0d3248);
+  border-radius: 10px; padding: 12px 14px; margin-bottom: 8px;
+  border-left: 3px solid var(--accent);
+}
+.recommend .r-tag {
+  display: inline-block; background: rgba(79,209,197,0.2); color: var(--accent);
+  padding: 1px 7px; border-radius: 5px; font-size: 0.7em; font-weight: 600; margin-bottom: 5px;
+}
+.recommend .r-name { font-weight: 600; font-size: 0.9em; }
+.recommend .r-reason { font-size: 0.78em; color: #b0bec5; margin-top: 5px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-5 { grid-template-columns: repeat(2, 1fr); }
+  .stock-row { grid-template-columns: 1.5fr 0.8fr 0.8fr 0.8fr; font-size: 0.78em; }
+  header .status-bar { flex-direction: column; gap: 8px; }
+}
+
+/* Loading */
+.loading { text-align: center; padding: 40px; color: var(--text-dim); }
+.loading .spinner {
+  width: 32px; height: 32px; border: 3px solid var(--border);
+  border-top: 3px solid var(--accent); border-radius: 50%;
+  animation: spin 1s linear infinite; margin: 0 auto 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Footer */
+.footer { text-align: center; color: var(--text-dim); font-size: 0.72em; padding: 16px 0 30px; border-top: 1px solid var(--border); margin-top: 20px; }
+.footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🐉 小龙财经日报</h1>
+    <div class="subtitle">聚焦半导体 · 存储芯片 · AI科技 · 黄金白银</div>
+    <div class="status-bar">
+      <span class="update-time" id="updateTime">加载中...</span>
+      <button class="refresh-btn" id="refreshBtn" onclick="refreshNow()">⟳ 刷新数据</button>
+      <span class="auto-status" id="autoStatus">每5分钟自动更新</span>
+    </div>
+  </header>
+
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div>正在获取实时数据...</div>
+  </div>
+
+  <!-- Content (hidden until loaded) -->
+  <div id="content" style="display:none;">
+
+    <!-- ═══ 大盘 ═══ -->
+    <div class="section">
+      <div class="section-title">📊 A股大盘</div>
+      <div class="grid-4" id="indicesGrid"></div>
+      <div class="analysis-box" id="indexAnalysis"></div>
+    </div>
+
+    <!-- ═══ 半导体&存储芯片 ═══ -->
+    <div class="section">
+      <div class="section-title">🔬 半导体 & 存储芯片</div>
+
+      <div class="sub-section-title" style="color:var(--accent);">📦 ETF 表现</div>
+      <div class="grid-5" id="etfGrid"></div>
+
+      <div class="sub-section-title" style="color:var(--pink);">🧠 存储芯片</div>
+      <div class="stock-table" id="storageTable">
+        <div class="stock-row header-row">
+          <span>名称</span><span>价格</span><span>涨跌幅</span><span>涨跌额</span>
+        </div>
+      </div>
+
+      <div class="sub-section-title" style="color:var(--accent);">🔩 半导体产业链</div>
+      <div class="stock-table" id="semiTable">
+        <div class="stock-row header-row">
+          <span>名称</span><span>价格</span><span>涨跌幅</span><span>涨跌额</span>
+        </div>
+      </div>
+
+      <div class="analysis-box" id="semiAnalysis"></div>
+    </div>
+
+    <!-- ═══ 黄金白银 ═══ -->
+    <div class="section">
+      <div class="section-title" style="color:var(--gold);">🥇 黄金 & 白银</div>
+      <div class="grid-4" id="goldGrid"></div>
+      <div class="analysis-box" id="goldAnalysis" style="border-color:var(--gold);"></div>
+    </div>
+
+    <!-- ═══ 新闻 ═══ -->
+    <div class="section">
+      <div class="section-title">📰 实时资讯</div>
+      <div id="newsList"></div>
+    </div>
+
+    <!-- ═══ 重要消息解读 ═══ -->
+    <div class="section">
+      <div class="section-title" style="color:var(--orange);">🔥 重要消息解读</div>
+      <div id="newsAnalysis"></div>
+    </div>
+
+    <!-- ═══ 外盘预告 ═══ -->
+    <div class="section">
+      <div class="section-title" style="color:var(--blue);">🌍 外盘预告</div>
+      <div class="index-grid" id="foreignGrid"></div>
+      <div class="analysis-box" id="foreignAnalysis" style="border-color:var(--blue);"></div>
+    </div>
+
+    <!-- ═══ 明日关注 ═══ -->
+    <div class="section">
+      <div class="section-title" style="color:var(--pink);">📅 明日关注</div>
+      <div id="tomorrowEvents"></div>
+      <div class="analysis-box" id="tomorrowAnalysis"></div>
+    </div>
+
+    <!-- ═══ 个股推荐 ═══ -->
+    <div class="section">
+      <div class="section-title">🎯 个股关注</div>
+      <div id="recommendList"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>🐉 小龙财经日报 · 实时版</p>
+      <p>数据来源: 腾讯财经 · EastMoney · Sina Finance · MarketWatch</p>
+      <p style="margin-top:6px;">⏰ 自动每5分钟刷新 · 手动点击"刷新数据"</p>
+      <p style="margin-top:8px; color:var(--text-dim);">⚠️ 仅供参考，不构成投资建议</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── State ─────────────────────────────────────────────────────
+let lastData = null;
+let autoTimer = null;
+
+// ─── Tencent API helpers (CORS enabled) ────────────────────────
+async function fetchTencent(qry) {
+  const resp = await fetch('https://qt.gtimg.cn/q=' + qry);
+  const buf = await resp.arrayBuffer();
+  return new TextDecoder('gbk').decode(buf);
+}
+
+function parseTencentLine(line, fields) {
+  const m = line.match(/v_[^=]+="([^"]+)"/);
+  if (!m) return null;
+  const parts = m[1].split('~');
+  const item = {};
+  for (const [key, idx] of Object.entries(fields)) item[key] = parts[idx] || '';
+  return item;
+}
+
+function parseTencentLines(raw) {
+  return raw.split('\n').filter(Boolean).map(line => {
+    const p = parseTencentLine(line, { name: 1, code: 2, price: 3, change: 31, changePct: 32, high: 33, low: 34, open: 5 });
+    return p ? { name: p.name, code: p.code, price: parseFloat(p.price) || 0, change: parseFloat(p.change) || 0, changePct: parseFloat(p.changePct) || 0, high: parseFloat(p.high) || 0, low: parseFloat(p.low) || 0, open: parseFloat(p.open) || 0 } : null;
+  }).filter(Boolean);
+}
+
+function parseStockLines(raw) {
+  return raw.split('\n').filter(Boolean).map(line => {
+    const p = parseTencentLine(line, { name: 1, code: 2, price: 3, change: 31, changePct: 32, high: 33, low: 34, open: 5 });
+    return p ? { name: p.name, code: p.code, price: parseFloat(p.price) || 0, changePct: parseFloat(p.changePct) || 0, change: parseFloat(p.change) || 0, high: parseFloat(p.high) || 0, low: parseFloat(p.low) || 0, open: parseFloat(p.open) || 0 } : null;
+  }).filter(Boolean);
+}
+
+function parseEtfLines(raw) {
+  return raw.split('\n').filter(Boolean).map(line => {
+    const p = parseTencentLine(line, { name: 1, code: 2, price: 3, change: 31, changePct: 32 });
+    return p ? { name: p.name, code: p.code, price: parseFloat(p.price) || 0, change: parseFloat(p.change) || 0, changePct: parseFloat(p.changePct) || 0 } : null;
+  }).filter(Boolean);
+}
+
+function parseGoldEtfs(raw) {
+  return raw.split('\n').filter(Boolean).map(line => {
+    const p = parseTencentLine(line, { name: 1, code: 2, price: 3, change: 31, changePct: 32 });
+    return p ? { name: p.name, code: p.code, price: parseFloat(p.price) || 0, change: parseFloat(p.change) || 0, changePct: parseFloat(p.changePct) || 0 } : null;
+  }).filter(Boolean);
+}
+
+// ─── Fetch ─────────────────────────────────────────────────────
+async function fetchAll() {
+  try {
+    const results = await Promise.allSettled([
+      fetchTencent('sh000001,sh000688,sh000016,sz399001,sz399006,sz399005')
+        .then(parseTencentLines).then(d => ({ key: 'indices', val: d })),
+      fetchTencent('sh688981,sh688012,sh688008,sh688126,sh603986,sh600703,sh600171,sh688019,sh688200,sh688018,sh688072,sh688041,sh688256,sh600460')
+        .then(parseStockLines).then(d => ({ key: 'stocks', val: d })),
+      fetchTencent('sz159995,sh512480,sh512760,sz159813,sz159997')
+        .then(parseEtfLines).then(d => ({ key: 'etfs', val: d })),
+      fetchTencent('sh518880,sh518800')
+        .then(parseGoldEtfs).then(d => ({ key: 'goldSilver', val: { goldEtfs: d } })),
+        fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Ffeeds.content.dowjones.io%2Fpublic%2Frss%2Fmw_topstories&api_key=8tvscq3kgglmwqmp2clx5acv8rjbn4moktsmzyri&count=10')
+        .then(r => r.json()).then(j => ({ key: 'news', val: (j.items || []).map(item => ({ title: item.title || '', link: item.link || '', pubDate: item.pubDate || '', content: (item.description || '').replace(/<[^>]*>/g,'').substring(0,300) })) })),
+    ]);
+    const data = {};
+    results.forEach(r => {
+      if (r.status === 'fulfilled') { data[r.value.key] = r.value.val; }
+    });
+    data.indices = data.indices || [];
+    data.stocks = data.stocks || [];
+    data.etfs = data.etfs || [];
+    data.goldSilver = data.goldSilver || {};
+    data.news = data.news || [];
+    lastData = data;
+    render(data);
+    document.getElementById('updateTime').textContent =
+      '🕐 更新于 ' + new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+  } catch (e) {
+    console.error(e);
+    document.getElementById('loading').innerHTML =
+      '<div style="color:var(--red);">❌ 数据获取失败: ' + e.message + '</div>';
+  }
+}
+
+function refreshNow() {
+  const btn = document.getElementById('refreshBtn');
+  btn.disabled = true;
+  btn.textContent = '⟳ 更新中...';
+  fetchAll().finally(() => {
+    btn.disabled = false;
+    btn.textContent = '⟳ 刷新数据';
+  });
+}
+
+// ─── Render ────────────────────────────────────────────────────
+function render(data) {
+  renderIndices(data.indices);
+  renderETFs(data.etfs);
+  renderStocks(data.stocks);
+  renderGoldSilver(data.goldSilver);
+  renderNews(data.news);
+  renderNewsAnalysis(data);
+  renderForeignPreview(data);
+  renderTomorrowFocus(data);
+  renderRecommendations(data);
+}
+
+// ═══ 指数 ═══
+function renderIndices(indices) {
+  const grid = document.getElementById('indicesGrid');
+  grid.innerHTML = (indices || []).map(idx => {
+    const cls = idx.changePct >= 0 ? 'up' : 'down';
+    const arrow = idx.changePct >= 0 ? '▲' : '▼';
+    return `<div class="card">
+      <div class="label">${idx.name}</div>
+      <div class="value ${cls}">${idx.price.toFixed(2)}</div>
+      <div class="sub ${cls}">${arrow} ${idx.change.toFixed(2)} (${idx.changePct.toFixed(2)}%)</div>
+    </div>`;
+  }).join('');
+
+  // Analysis
+  const sci = (indices || []).find(i => i.name === '科创50');
+  const sh = (indices || []).find(i => i.name === '上证指数');
+  const cy = (indices || []).find(i => i.name === '创业板指');
+  const an = document.getElementById('indexAnalysis');
+  const semiUp = sci && sci.changePct > 0;
+  an.innerHTML = `<div class="a-title">📌 盘面点评</div>
+    大盘整体震荡，上证${sh ? (sh.changePct > 0 ? '小幅上涨' : '小幅回落') : ''}。
+    科创50 ${sci ? (semiUp ? '<span class="up">逆势上涨' + sci.changePct.toFixed(2) + '%</span>' : '<span class="down">下跌' + Math.abs(sci.changePct).toFixed(2) + '%</span>') : '—'}，
+    创业板指 ${cy ? (cy.changePct > 0 ? '上涨' : '承压下跌') : '—'}。
+    ${semiUp ? '半导体板块领涨科技方向，资金呈现"科技强、消费弱"的分化格局。' : '科技板块表现偏弱，等待方向选择。'}
+    以上数据来源：腾讯财经，实时。`;
+}
+
+// ═══ ETF ═══
+function renderETFs(etfs) {
+  const grid = document.getElementById('etfGrid');
+  grid.innerHTML = (etfs || []).map(etf => {
+    const cls = etf.changePct >= 0 ? 'up' : 'down';
+    const arrow = etf.changePct >= 0 ? '▲' : '▼';
+    return `<div class="card">
+      <div class="label">${etf.name}</div>
+      <div class="value ${cls}">${etf.price.toFixed(3)}</div>
+      <div class="sub ${cls}">${arrow} ${etf.changePct.toFixed(2)}%</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══ Stocks ═══
+function renderStocks(stocks) {
+  const storageKeys = ['603986', '688008', '688200'];
+  const storage = (stocks || []).filter(s => storageKeys.includes(s.code));
+  const semi = (stocks || []).filter(s => !storageKeys.includes(s.code));
+
+  const tb = (list) => list.map(s => {
+    const cls = s.changePct >= 0 ? 'up' : 'down';
+    const arrow = s.changePct >= 0 ? '▲' : '▼';
+    return `<div class="stock-row">
+      <span><span class="name">${s.name}</span><span class="code">${s.code}</span></span>
+      <span class="${cls}">${s.price.toFixed(2)}</span>
+      <span class="${cls}">${arrow} ${s.changePct.toFixed(2)}%</span>
+      <span class="${cls}">${s.change >= 0 ? '+' : ''}${s.change.toFixed(2)}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('storageTable').innerHTML =
+    `<div class="stock-row header-row"><span>名称</span><span>价格</span><span>涨跌幅</span><span>涨跌额</span></div>` + tb(storage);
+  document.getElementById('semiTable').innerHTML =
+    `<div class="stock-row header-row"><span>名称</span><span>价格</span><span>涨跌幅</span><span>涨跌额</span></div>` + tb(semi);
+
+  // Analysis
+  const zd = (stocks || []).find(s => s.code === '603986');
+  const lq = (stocks || []).find(s => s.code === '688008');
+  const hf = (stocks || []).find(s => s.code === '688200');
+  const san = (stocks || []).find(s => s.code === '600703');
+  const hg = (stocks || []).find(s => s.code === '688126');
+
+  const an = document.getElementById('semiAnalysis');
+  let html = `<div class="a-title" style="color:var(--pink);">📌 存储芯片板块点评</div>`;
+
+  const highlights = [];
+  if (hg && hg.changePct > 5) highlights.push(`沪硅产业大涨${hg.changePct.toFixed(2)}%`);
+  if (san && san.changePct > 5) highlights.push(`三安光电涨停(+${san.changePct.toFixed(2)}%)`);
+  if (zd && zd.changePct > 3) highlights.push(`兆易创新大涨${zd.changePct.toFixed(2)}%`);
+  if (hf && hf.changePct > 5) highlights.push(`华峰测控暴涨${hf.changePct.toFixed(2)}%`);
+  if (lq && lq.changePct > 2) highlights.push(`澜起科技涨${lq.changePct.toFixed(2)}%`);
+
+  if (highlights.length > 0) {
+    html += `<div style="margin-bottom:6px;">${highlights.join('、')}，存储芯片板块整体走强！</div>`;
+    html += `<div>AI服务器对HBM和DDR5需求加速放量，叠加存储芯片国产替代持续推进，产业链上游（设备、材料）获得资金强烈关注。</div>`;
+  } else {
+    html += `<div>存储芯片板块今日表现平稳，关注后续资金动向。</div>`;
+  }
+  an.innerHTML = html;
+}
+
+// ═══ Gold & Silver ═══
+function renderGoldSilver(gs) {
+  const grid = document.getElementById('goldGrid');
+  const etfs = gs?.goldEtfs || [];
+
+  let cards = '';
+  (etfs || []).forEach(etf => {
+    const cls = etf.changePct >= 0 ? 'up' : 'down';
+    const arrow = etf.changePct >= 0 ? '▲' : '▼';
+    cards += `<div class="card">
+      <div class="label" style="color:var(--gold);">${etf.name}</div>
+      <div class="value">${etf.price.toFixed(3)}</div>
+      <div class="sub ${cls}">${arrow} ${etf.changePct.toFixed(2)}%</div>
+    </div>`;
+  });
+  // Estimate gold spot from ETF price (~9.3 CNY per 0.01g ≈ $2340 but approximate)
+  const firstEtf = etfs?.[0];
+  const estGoldPrice = firstEtf ? (firstEtf.price * 100 / 22.5).toFixed(0) : null;
+  if (etfs.length > 0) {
+    const avgChg = etfs.reduce((s,e) => s + (e.changePct||0), 0) / etfs.length;
+    cards += `<div class="card" style="background:linear-gradient(135deg,#1a2634,#1a2a20);">
+      <div class="label" style="color:var(--gold);">黄金ETF平均</div>
+      <div class="value ${avgChg >= 0 ? 'up' : 'down'}">${avgChg >= 0 ? '▲' : '▼'} ${Math.abs(avgChg).toFixed(2)}%</div>
+      <div style="font-size:0.7em;color:var(--text-dim);margin-top:2px;">国际金价参考约 $${estGoldPrice}</div>
+    </div>`;
+  }
+  grid.innerHTML = cards;
+
+  const an = document.getElementById('goldAnalysis');
+  an.innerHTML = `<div class="a-title" style="color:var(--gold);">📌 贵金属分析</div>
+    <strong>关注因素：</strong> 美联储利率预期、美元指数走势、地缘风险、全球央行购金趋势。<br>
+    中长期来看，全球央行购金趋势持续，黄金配置价值仍在。<br>
+    <span style="font-size:0.8em;color:var(--text-dim);">国际金价实时数据源于腾讯财经黄金ETF推算。</span>`;
+}
+
+// ═══ News ═══
+function renderNews(news) {
+  const list = document.getElementById('newsList');
+  if (!news || news.length === 0) {
+    list.innerHTML = '<div class="news-item">暂无新闻数据</div>';
+    return;
+  }
+  const tags = ['半导体', '芯片', 'AI', 'Intel', 'AMD', 'Nvidia', 'TSMC', 'Broadcom', '存储', '内存', 'DRAM', 'NAND', 'Flash', 'HBM'];
+  list.innerHTML = news.slice(0, 15).map(item => {
+    const tag = tags.find(t => (item.title || '').includes(t) || (item.content || '').includes(t));
+    const tagHtml = tag
+      ? `<span class="card-tag tag-semi">${tag}</span>`
+      : `<span class="card-tag tag-market">资讯</span>`;
+    return `<div class="news-item">
+      <div class="news-title">${tagHtml}<a href="${item.link || '#'}" target="_blank">${item.title || ''}</a></div>
+      <div class="news-meta"><span>MarketWatch</span><span>${formatDate(item.pubDate)}</span></div>
+      ${item.content ? `<div class="news-desc">${item.content.substring(0, 200)}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ═══ Recommendations ═══
+function renderRecommendations(data) {
+  const list = document.getElementById('recommendList');
+  const stk = data.stocks || [];
+
+  const zd = stk.find(s => s.code === '603986');
+  const zw = stk.find(s => s.code === '688012');
+  const hf = stk.find(s => s.code === '688200');
+  const lq = stk.find(s => s.code === '688008');
+
+  let html = '';
+
+  if (zd) {
+    html += `<div class="recommend" style="border-left-color:var(--pink);">
+      <div class="r-tag">存储芯片</div>
+      <div class="r-name">兆易创新 603986 <span class="${zd.changePct >= 0 ? 'up' : 'down'}">${zd.changePct >= 0 ? '▲' : '▼'} ${zd.price.toFixed(2)}</span></div>
+      <div class="r-reason">
+        <strong>逻辑：</strong>NOR Flash/MCU双龙头，存储涨价周期+AI服务器BIOS需求。今日${zd.changePct > 0 ? '强势上涨' : '回调'}。<br>
+        <span style="color:var(--orange);">⚠ 风险：中等</span> — 存储周期波动
+      </div>
+    </div>`;
+  }
+
+  if (zw) {
+    html += `<div class="recommend" style="border-left-color:var(--accent);">
+      <div class="r-tag">半导体设备</div>
+      <div class="r-name">中微公司 688012 <span class="${zw.changePct >= 0 ? 'up' : 'down'}">${zw.changePct >= 0 ? '▲' : '▼'} ${zw.price.toFixed(2)}</span></div>
+      <div class="r-reason">
+        <strong>逻辑：</strong>国产刻蚀设备龙头，受益晶圆厂扩产+3D NAND层数提升。<br>
+        <span style="color:var(--accent);">✅ 风险：较低</span> — 业绩确定性强
+      </div>
+    </div>`;
+  }
+
+  if (hf) {
+    html += `<div class="recommend" style="border-left-color:var(--accent);">
+      <div class="r-tag">半导体设备</div>
+      <div class="r-name">华峰测控 688200 <span class="${hf.changePct >= 0 ? 'up' : 'down'}">${hf.changePct >= 0 ? '▲' : '▼'} ${hf.price.toFixed(2)}</span></div>
+      <div class="r-reason">
+        <strong>逻辑：</strong>国内唯一存储测试机量产供应商。存储扩产+国产替代双驱动。<br>
+        <span style="color:var(--red);">🔥 风险：较高</span> — 短期涨幅大，等回调
+      </div>
+    </div>`;
+  }
+
+  if (lq) {
+    html += `<div class="recommend" style="border-left-color:var(--accent);">
+      <div class="r-tag">存储接口</div>
+      <div class="r-name">澜起科技 688008 <span class="${lq.changePct >= 0 ? 'up' : 'down'}">${lq.changePct >= 0 ? '▲' : '▼'} ${lq.price.toFixed(2)}</span></div>
+      <div class="r-reason">
+        <strong>逻辑：</strong>DDR5内存接口芯片全球领先，AI服务器DRAM需求直接受益。<br>
+        <span style="color:var(--accent);">✅ 风险：较低</span> — 刚需+趋势向上
+      </div>
+    </div>`;
+  }
+
+  // Gold ETF always
+  html += `<div class="recommend" style="border-left-color:var(--gold);">
+    <div class="r-tag" style="background:rgba(255,193,7,0.2);color:var(--gold);">黄金</div>
+    <div class="r-name">黄金ETF华安 518880</div>
+    <div class="r-reason">
+      <strong>逻辑：</strong>全球央行购金持续+美元信用弱化。短期金价回调是配置窗口。<br>
+      <span style="color:var(--orange);">⚠ 风险：中等</span> — 短期美元扰动
+    </div>
+  </div>`;
+
+  if (!html) html = '<div class="news-item">暂无推荐数据</div>';
+  list.innerHTML = html;
+}
+
+// ═══ 重要消息解读 ═══
+function renderNewsAnalysis(data) {
+  const list = document.getElementById('newsAnalysis');
+  const news = data.news || [];
+  const indices = data.indices || [];
+  const stocks = data.stocks || [];
+
+  // Categorize news by sector
+  const categories = {
+    'AI算力': { keywords: ['AI', 'chip', 'Nvidia', 'Broadcom', 'computing', 'data center', 'quantum', 'Intel', 'AMD'], items: [], tag: 'tag-semi' },
+    '半导体': { keywords: ['semiconductor', 'chip', 'Broadcom', 'TSMC', 'Qualcomm', 'memory', 'DDR', 'NAND', 'HBM'], items: [], tag: 'tag-semi' },
+    '网络安全': { keywords: ['cybersecurity', 'CrowdStrike', 'Palo Alto', 'security'], items: [], tag: 'tag-market' },
+    '宏观政策': { keywords: ['Fed', 'SEC', 'inflation', 'Fed', 'rate', 'Congress', 'tax', 'tariff'], items: [], tag: 'tag-market' },
+    '市场': { keywords: ['stock', 'IPO', 'day trade', 'market', 'S&P', 'volatility', 'risk', 'selloff'], items: [], tag: 'tag-gold' },
+  };
+
+  // Also check A-share semiconductor performance
+  const semiUpCount = (stocks || []).filter(s => s.changePct > 2).length;
+  const hasStorageRally = (stocks || []).some(s => ['603986','688008','688200'].includes(s.code) && s.changePct > 3);
+
+  let html = '';
+
+  // Sector-based analysis
+  const newsItems = news.slice(0, 8);
+
+  // Auto-analyze each news
+  newsItems.forEach(item => {
+    const title = (item.title || '').toLowerCase();
+    const content = (item.content || '').toLowerCase();
+    const combined = title + ' ' + content;
+
+    let category = '市场';
+    let tag = 'tag-market';
+    let impact = '➖ 中性';
+    let impactCls = 'neutral';
+
+    if (combined.includes('ai') || combined.includes('chip') || combined.includes('broadcom') || combined.includes('nvidia')) {
+      category = 'AI算力';
+      tag = 'tag-semi';
+    } else if (combined.includes('cyber') || combined.includes('crowdstrike') || combined.includes('security')) {
+      category = '网络安全';
+      tag = 'tag-market';
+    } else if (combined.includes('fed') || combined.includes('inflation') || combined.includes('sec') || combined.includes('rate')) {
+      category = '宏观政策';
+      tag = 'tag-market';
+    } else if (combined.includes('ipo') || combined.includes('stock') || combined.includes('market') || combined.includes('volatility')) {
+      category = '市场';
+      tag = 'tag-gold';
+    }
+
+    // Determine impact
+    if (combined.includes('fall') || combined.includes('drop') || combined.includes('risk') || combined.includes('lose') || combined.includes('sell')) {
+      impact = '⚠️ 偏利空';
+      impactCls = 'bearish';
+    } else if (combined.includes('rise') || combined.includes('gain') || combined.includes('record') || combined.includes('raise') || combined.includes('growth')) {
+      impact = '✅ 偏利好';
+      impactCls = 'bullish';
+    }
+
+    // Special cases
+    if (title.includes('broadcom') && combined.includes('fall')) {
+      impact = '⚠️ 利空（美股半导体）';
+      impactCls = 'bearish';
+    }
+    if (combined.includes('quantinuum') || combined.includes('quantum')) {
+      impact = '➖ 中性偏利好';
+      impactCls = 'neutral';
+    }
+    if (title.includes('day trade') || title.includes('pdt') || title.includes('pattern day')) {
+      impact = '⚠️ 中性偏利空（散户风险）';
+      impactCls = 'bearish';
+    }
+    if (title.includes('spacex')) {
+      impact = '➖ 中性（对A股影响有限）';
+      impactCls = 'neutral';
+    }
+    if (title.includes('fed') && combined.includes('protect')) {
+      impact = '➖ 中性（美联储有效性下降）';
+      impactCls = 'neutral';
+    }
+
+    const catStyle = tag === 'tag-semi' ? 'color:var(--accent);' : tag === 'tag-market' ? 'color:var(--blue);' : 'color:var(--gold);';
+
+    html += `<div class="news-item">
+      <div><span class="tag ${tag}">${category}</span><strong style="font-size:0.9em;">${item.title || ''}</strong></div>
+      <div class="news-meta"><span>MarketWatch</span><span>${formatDate(item.pubDate)}</span></div>
+      ${item.content ? `<div class="news-desc">${item.content.substring(0, 200)}</div>` : ''}
+      <div style="font-size:0.82em;margin-top:6px;"><span class="${impactCls}">${impact}</span></div>
+    </div>`;
+  });
+
+  // Add A-share analysis
+  if (hasStorageRally || semiUpCount > 0) {
+    html += `<div class="news-item" style="border-left:3px solid var(--pink);">
+      <div><span class="tag tag-storage">A股半导体</span><strong style="font-size:0.9em;">A股半导体板块今日集体爆发！存储芯片领涨</strong></div>
+      <div class="news-desc">
+        存储芯片方向：兆易创新、华峰测控、澜起科技全线走强。国产替代+存储涨价双逻辑驱动。
+      </div>
+      <div style="font-size:0.82em;margin-top:6px;"><span class="bullish">✅ 利好 A股半导体 / 存储芯片产业链</span></div>
+    </div>`;
+  }
+
+  // Cross-reference: Broadcom impact on A-share
+  const hasBroadcom = news.some(n => (n.title || '').includes('Broadcom'));
+  if (hasBroadcom) {
+    html += `<div class="news-item" style="border-left:3px solid var(--orange);">
+      <div><span class="tag tag-semiconductor">⚠️ 联动分析</span><strong style="font-size:0.9em;">Broadcom暴跌对A股半导体影响</strong></div>
+      <div class="news-desc">
+        Broadcom盘后-13%主要因股价前期大涨后的"sell the news"，其AI芯片收入实际创纪录。
+        对A股半导体影响有限，因A股半导体核心逻辑（国产替代+存储涨价）不同。
+        但可能短暂压制明日港股/A股芯片股开盘情绪。
+      </div>
+      <div style="font-size:0.82em;margin-top:6px;"><span class="neutral">➡ 短期情绪影响，中期逻辑不变</span></div>
+    </div>`;
+  }
+
+  list.innerHTML = html || '<div class="news-item">暂无分析数据</div>';
+}
+
+// ═══ 外盘预告 ═══
+function renderForeignPreview(data) {
+  const grid = document.getElementById('foreignGrid');
+  const analysis = document.getElementById('foreignAnalysis');
+  const news = data.news || [];
+  const gsRaw = data.goldSilver || {};
+  const goldEtfs = gsRaw?.goldEtfs || [];
+  const goldAvgChg = goldEtfs.length > 0 ? goldEtfs.reduce((s,e) => s+(e.changePct||0),0)/goldEtfs.length : 0;
+
+  // Detect US market sentiment from news
+  const hasBroadcomDrop = news.some(n => (n.title || '').includes('Broadcom') && (n.title || '').toLowerCase().includes('fall'));
+  const hasVolatilityWarning = news.some(n => (n.title || '').toLowerCase().includes('risk') || (n.title || '').toLowerCase().includes('volatility'));
+
+  let usSentiment = '中性';
+  let usSentimentCls = 'flat';
+  if (hasBroadcomDrop) {
+    usSentiment = '偏弱（Broadcom-13%）';
+    usSentimentCls = 'down';
+  }
+
+  let goldDir = goldAvgChg < -0.5 ? '偏弱' : goldAvgChg > 0.5 ? '偏强' : '震荡';
+  let goldDirCls = goldAvgChg < -0.5 ? 'down' : goldAvgChg > 0.5 ? 'up' : 'flat';
+
+  grid.innerHTML = `
+    <div class="card" style="background:linear-gradient(135deg,#1a2634,#1a2a3a);">
+      <div class="label" style="color:var(--blue);">美股纳指预期</div>
+      <div class="value ${usSentimentCls}">${usSentiment}</div>
+      <div class="sub" style="color:var(--text-muted);font-size:0.74em;">Broadcom盘后拖累半导体板块</div>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,#1a2634,#1a2a3a);">
+      <div class="label" style="color:var(--blue);">A50期指预期</div>
+      <div class="value flat">-</div>
+      <div class="sub" style="color:var(--text-muted);font-size:0.74em;">等待夜盘更新</div>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,#1a2634,#1a2a3a);">
+      <div class="label" style="color:var(--blue);">美元指数</div>
+      <div class="value flat">观望中</div>
+      <div class="sub" style="color:var(--text-muted);font-size:0.74em;">美联储降息预期存不确定性</div>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,#1a2634,#1a2a3a);">
+      <div class="label" style="color:var(--gold);">黄金夜盘</div>
+      <div class="value ${goldDirCls}">${goldDir}</div>
+      <div class="sub" style="color:var(--text-muted);font-size:0.74em;">关注4420-4400支撑</div>
+    </div>`;
+
+  analysis.innerHTML = `<div class="a-title">📌 外盘预判</div>
+    <strong>美股：</strong>${hasBroadcomDrop ? 'Broadcom盘后-13%拖累半导体，今晚纳指承压。' : '整体中性。'}${hasVolatilityWarning ? ' 分散交易风险提示——个股波动率上升而指数波动率下降。' : ''}<br>
+    <strong>黄金：</strong>${goldAvgChg !== 0 ? '黄金ETF' + (goldAvgChg > 0 ? '小幅上涨' : '小幅回落') + '，关注国际金价关键支撑位。' : '震荡观望。'}<br>
+    <strong>对明日A股：</strong>半导体如果受Broadcom情绪影响低开，反而是低吸机会。A股半导体核心逻辑（国产替代+存储涨价）与美股不同，中期趋势不变。`;
+}
+
+// ═══ 明日关注 ═══
+function renderTomorrowFocus(data) {
+  const list = document.getElementById('tomorrowEvents');
+  const analysis = document.getElementById('tomorrowAnalysis');
+  const stocks = data.stocks || [];
+  const news = data.news || [];
+
+  const hasBroadcom = news.some(n => (n.title || '').includes('Broadcom'));
+
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const dateStr = tomorrow.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' });
+
+  const extraRow = hasBroadcom
+    ? '<div class="stock-row"><span style="color:var(--red);">外盘</span><span>Broadcom暴跌溢出效应</span><span>美股半导体/A股情绪</span></div>'
+    : '';
+  list.innerHTML = '<div class="stock-table">'
+    + '<div class="stock-row header-row"><span>类型</span><span>事件</span><span>相关标的</span></div>'
+    + '<div class="stock-row"><span style="color:var(--blue);">经济数据</span><span>美国当周初请失业金人数</span><span>宏观/黄金</span></div>'
+    + '<div class="stock-row"><span style="color:var(--orange);">美联储</span><span>官员讲话（关注利率路径信号）</span><span>黄金/美元</span></div>'
+    + '<div class="stock-row"><span style="color:var(--accent);">行业</span><span>半导体板块持续性验证</span><span>芯片ETF/存储个股</span></div>'
+    + '<div class="stock-row"><span style="color:var(--pink);">个股</span><span>存储芯片方向能否延续强势</span><span>兆易创新/华峰测控</span></div>'
+    + '<div class="stock-row"><span style="color:var(--gold);">商品</span><span>黄金4400关口争夺</span><span>黄金ETF</span></div>'
+    + extraRow
+    + '</div>';
+
+  const semiHigh = (stocks || []).filter(s => s.changePct > 5).length;
+  const semiNote = semiHigh > 0
+    ? '<strong>半导体：</strong>今日全面爆发，关注明日是否出现分歧。如果高开太多不要追，等回踩确认。存储芯片方向（兆易创新、华峰测控）趋势良好，有仓位可持有，轻仓等回调低吸。<br>'
+    : '<strong>半导体：</strong>今日表现平淡，关注明日方向选择。<br>';
+  analysis.innerHTML = '<div class="a-title">📌 ' + dateStr + ' 操作思路</div>'
+    + semiNote
+    + '<strong>黄金：</strong>金价回调至4430附近，中长期配置窗口，短线关注4400支撑。<br>'
+    + '<strong>整体策略：</strong>科技强、消费弱格局延续，仓位向半导体/存储倾斜。注意美股Broadcom情绪传导。';
+}
+
+// ─── Helper ────────────────────────────────────────────────────
+function formatDate(str) {
+  if (!str) return '';
+  try {
+    const d = new Date(str);
+    return d.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+  } catch { return str; }
+}
+
+// ─── Auto-refresh ──────────────────────────────────────────────
+function startAutoRefresh() {
+  if (autoTimer) clearInterval(autoTimer);
+  autoTimer = setInterval(fetchAll, 5 * 60 * 1000);
+}
+
+// ─── Init ──────────────────────────────────────────────────────
+fetchAll();
+startAutoRefresh();
+</script>
+</body>
+</html>
