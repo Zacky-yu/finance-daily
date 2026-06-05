@@ -1,0 +1,48 @@
+name: 🗞️ 定时抓取新闻缓存
+
+on:
+  schedule:
+    - cron: '0 0-15 * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch-news:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: 抓取 MarketWatch RSS
+        run: |
+          curl -s -o /tmp/mw_rss.xml \
+            "https://feeds.content.dowjones.io/public/rss/mw_topstories"
+      - name: 解析 RSS 为 JSON
+        run: |
+          node -e "
+          const fs = require('fs');
+          const xml = fs.readFileSync('/tmp/mw_rss.xml', 'utf-8');
+          const items = [];
+          const re = /<item>([\s\S]*?)<\/item>/g;
+          let m;
+          while ((m = re.exec(xml)) !== null && items.length < 10) {
+            const ix = m[1];
+            const g = (tag) => {
+              const p = new RegExp('<' + tag + '[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/' + tag + '>|<' + tag + '[^>]*>([\\s\\S]*?)<\\/' + tag + '>');
+              const r = p.exec(ix);
+              return (r && (r[1] || r[2] || '')).trim();
+            };
+            items.push({
+              title: g('title'), link: g('link'), pubDate: g('pubDate'),
+              content: g('description').replace(/<[^>]*>/g, '').substring(0, 300),
+            });
+          }
+          const result = { items, fetchedAt: new Date().toISOString(), count: items.length };
+          fs.writeFileSync('public/news-cache.json', JSON.stringify(result, null, 2));
+          "
+      - name: 提交并推送
+        run: |
+          git config user.name 'xiaolong-bot'
+          git config user.email 'bot@xiaolong.finance'
+          git add public/news-cache.json
+          git diff --cached --quiet || git commit -m \"🗞️ 新闻缓存 \${{ github.event.repository.updated_at }}\"
+          git push
