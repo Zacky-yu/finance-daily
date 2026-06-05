@@ -1,0 +1,65 @@
+name: 🗞️ 定时抓取新闻缓存
+
+on:
+  schedule:
+    # 每整点运行（北京时间 8:00-23:00）
+    - cron: '0 0-15 * * *'  # UTC 0-15 = 北京时间 8:00-23:00
+  workflow_dispatch:        # 支持手动触发
+
+jobs:
+  fetch-news:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 抓取 MarketWatch RSS
+        id: fetch
+        run: |
+          RESP=$(curl -s -o /tmp/mw_rss.xml -w "%{http_code}" \
+            "https://feeds.content.dowjones.io/public/rss/mw_topstories")
+          echo "status=$RESP" >> $GITHUB_OUTPUT
+          if [ "$RESP" != "200" ]; then
+            echo "RSS fetch returned $RESP"
+            exit 1
+          fi
+          echo "✅ RSS fetched, size: $(wc -c < /tmp/mw_rss.xml) bytes"
+
+      - name: 解析 RSS 为 JSON
+        run: |
+          node -e "
+          const fs = require('fs');
+          const xml = fs.readFileSync('/tmp/mw_rss.xml', 'utf-8');
+
+          const items = [];
+          const itemRegex = /<item>([\\s\\S]*?)<\\/item>/g;
+          let match;
+          while ((match = itemRegex.exec(xml)) !== null && items.length < 10) {
+            const ix = match[1];
+            const g = (tag) => {
+              const m = ix.match(new RegExp('<' + tag + '[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/' + tag + '>|<' + tag + '[^>]*>([\\s\\S]*?)<\\/' + tag + '>'));
+              return (m && (m[1] || m[2] || '')).trim();
+            };
+            items.push({
+              title: g('title'),
+              link: g('link'),
+              pubDate: g('pubDate'),
+              content: g('description').replace(/<[^>]*>/g, '').substring(0, 300),
+            });
+          }
+
+          const result = { items, fetchedAt: new Date().toISOString(), count: items.length };
+          fs.writeFileSync('public/news-cache.json', JSON.stringify(result, null, 2));
+          console.log('✅ 解析完成，共', items.length, '条新闻');
+          "
+
+      - name: 提交并推送
+        run: |
+          git config user.name "xiaolong-bot"
+          git config user.email "bot@xiaolong.finance"
+          git add public/news-cache.json
+          # Only commit if there are changes (avoid empty commits)
+          git diff --cached --quiet || git commit -m "🗞️ 新闻缓存更新 $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M')"
+          git push
