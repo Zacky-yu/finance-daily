@@ -358,6 +358,19 @@ function setCachedNews(news) {
   } catch(e) { /* localStorage full, ignore */ }
 }
 
+// ─── Parse RSS XML items ───────────────────────────────────
+function parseRSSItems(xmlStr) {
+  const parser = new DOMParser();
+  const xml = parser.parseFromString(xmlStr, 'text/xml');
+  const items = xml.querySelectorAll('item');
+  return Array.from(items).slice(0, 10).map(item => ({
+    title: item.querySelector('title')?.textContent || '',
+    link: item.querySelector('link')?.textContent || '',
+    pubDate: item.querySelector('pubDate')?.textContent || '',
+    content: (item.querySelector('description')?.textContent || '').replace(/<[^>]*>/g,'').substring(0, 300),
+  }));
+}
+
 async function fetchNews() {
   // Try cache first
   const cached = getCachedNews();
@@ -365,37 +378,48 @@ async function fetchNews() {
     return { news: cached, cached: true };
   }
 
-  try {
-    // Use allorigins.win as CORS proxy to fetch MarketWatch RSS directly
-    const rssUrl = 'https://feeds.content.dowjones.io/public/rss/mw_topstories';
+  // Determine best fetch method
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const rssUrl = 'https://feeds.content.dowjones.io/public/rss/mw_topstories';
+
+  const attempts = [];
+
+  // Method 1: Local API (fastest, no proxy)
+  if (isLocal) {
+    attempts.push((async () => {
+      const resp = await fetch('/api/news', { cache: 'no-cache' });
+      const data = await resp.json();
+      if (data.items && data.items.length > 0) {
+        return data.items;
+      }
+      throw new Error('Local API returned no items');
+    })());
+  }
+
+  // Method 2: allorigins.win CORS proxy
+  attempts.push((async () => {
     const resp = await fetch(
       'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl),
       { cache: 'no-cache' }
     );
     const data = await resp.json();
-
     if (!data || data.status?.http_code !== 200 || !data.contents) {
-      throw new Error('RSS proxy returned invalid response');
+      throw new Error('Proxy returned invalid response');
     }
+    return parseRSSItems(data.contents);
+  })());
 
-    // Parse RSS XML in browser
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data.contents, 'text/xml');
-    const items = xml.querySelectorAll('item');
-
-    const news = Array.from(items).slice(0, 10).map(item => ({
-      title: item.querySelector('title')?.textContent || '',
-      link: item.querySelector('link')?.textContent || '',
-      pubDate: item.querySelector('pubDate')?.textContent || '',
-      content: (item.querySelector('description')?.textContent || '').replace(/<[^>]*>/g,'').substring(0, 300),
-    }));
-
-    if (news.length > 0) {
-      setCachedNews(news);
-      return { news, cached: false };
+  // Try each method in sequence
+  for (const attempt of attempts) {
+    try {
+      const news = await attempt;
+      if (news && news.length > 0) {
+        setCachedNews(news);
+        return { news, cached: false };
+      }
+    } catch(e) {
+      console.warn('News method failed:', e.message);
     }
-  } catch(e) {
-    console.warn('News fetch failed:', e.message);
   }
 
   // Fallback: return cached even if expired
