@@ -366,19 +366,30 @@ async function fetchNews() {
   }
 
   try {
+    // Use allorigins.win as CORS proxy to fetch MarketWatch RSS directly
+    const rssUrl = 'https://feeds.content.dowjones.io/public/rss/mw_topstories';
     const resp = await fetch(
-      'https://api.rss2json.com/v1/api.json' +
-      '?rss_url=https%3A%2F%2Ffeeds.content.dowjones.io%2Fpublic%2Frss%2Fmw_topstories' +
-      '&api_key=8tvscq3kgglmwqmp2clx5acv8rjbn4moktsmzyri&count=10',
+      'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl),
       { cache: 'no-cache' }
     );
-    const j = await resp.json();
-    const news = (j.items || []).map(item => ({
-      title: item.title || '',
-      link: item.link || '',
-      pubDate: item.pubDate || '',
-      content: (item.description || '').replace(/<[^>]*>/g,'').substring(0,300),
+    const data = await resp.json();
+
+    if (!data || data.status?.http_code !== 200 || !data.contents) {
+      throw new Error('RSS proxy returned invalid response');
+    }
+
+    // Parse RSS XML in browser
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(data.contents, 'text/xml');
+    const items = xml.querySelectorAll('item');
+
+    const news = Array.from(items).slice(0, 10).map(item => ({
+      title: item.querySelector('title')?.textContent || '',
+      link: item.querySelector('link')?.textContent || '',
+      pubDate: item.querySelector('pubDate')?.textContent || '',
+      content: (item.querySelector('description')?.textContent || '').replace(/<[^>]*>/g,'').substring(0, 300),
     }));
+
     if (news.length > 0) {
       setCachedNews(news);
       return { news, cached: false };
