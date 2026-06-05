@@ -378,49 +378,50 @@ async function fetchNews() {
     return { news: cached, cached: true };
   }
 
-  // Determine best fetch method
   const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   const rssUrl = 'https://feeds.content.dowjones.io/public/rss/mw_topstories';
 
-  const attempts = [];
+  // Method 1: Same-origin news-cache.json (GitHub Actions or manual push)
+  if (!isLocal) {
+    try {
+      const resp = await fetch('./news-cache.json', { cache: 'no-cache' });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.items && data.items.length > 0) {
+          setCachedNews(data.items);
+          return { news: data.items, cached: false };
+        }
+      }
+    } catch(e) { console.warn('Cache JSON fetch failed:', e.message); }
+  }
 
-  // Method 1: Local API (fastest, no proxy)
+  // Method 2: Local API
   if (isLocal) {
-    attempts.push((async () => {
+    try {
       const resp = await fetch('/api/news', { cache: 'no-cache' });
       const data = await resp.json();
       if (data.items && data.items.length > 0) {
-        return data.items;
+        setCachedNews(data.items);
+        return { news: data.items, cached: false };
       }
-      throw new Error('Local API returned no items');
-    })());
+    } catch(e) { console.warn('Local API failed:', e.message); }
   }
 
-  // Method 2: allorigins.win CORS proxy
-  attempts.push((async () => {
+  // Method 3: allorigins.win CORS proxy
+  try {
     const resp = await fetch(
       'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl),
       { cache: 'no-cache' }
     );
     const data = await resp.json();
-    if (!data || data.status?.http_code !== 200 || !data.contents) {
-      throw new Error('Proxy returned invalid response');
-    }
-    return parseRSSItems(data.contents);
-  })());
-
-  // Try each method in sequence
-  for (const attempt of attempts) {
-    try {
-      const news = await attempt;
-      if (news && news.length > 0) {
-        setCachedNews(news);
-        return { news, cached: false };
+    if (data?.status?.http_code === 200 && data.contents) {
+      const items = parseRSSItems(data.contents);
+      if (items.length > 0) {
+        setCachedNews(items);
+        return { news: items, cached: false };
       }
-    } catch(e) {
-      console.warn('News method failed:', e.message);
     }
-  }
+  } catch(e) { console.warn('Proxy failed:', e.message); }
 
   // Fallback: return cached even if expired
   try {
@@ -816,6 +817,26 @@ function renderNewsAnalysis(data) {
             (cy ? (cy.changePct > 0 ? '也同步上涨' : '承压下行') : '') + '。结构性行情延续。',
       impact: '✅ 利好科技/半导体方向',
       impactCls: 'bullish',
+    });
+  }
+
+  // Always show at least a market summary
+  if (aShareEvents.length === 0) {
+    const sh = data.indices?.find(i => i.name === '上证指数');
+    const sci = data.indices?.find(i => i.name === '科创50');
+    const upStocks = (data.stocks || []).filter(s => s.changePct > 0).length;
+    const downStocks = (data.stocks || []).filter(s => s.changePct < 0).length;
+    const totalStocks = (data.stocks || []).length;
+    aShareEvents.push({
+      tag: '市场概览',
+      tagClass: 'tag-market',
+      title: `今日市况${sh ? (sh.changePct >= 0 ? '震荡偏稳' : '小幅回调') : '平稳'}，半导体方向暂无大幅异动`,
+      desc: `上证指数${sh ? sh.price.toFixed(2) + '(' + (sh.changePct >= 0 ? '+' : '') + sh.changePct.toFixed(2) + '%)' : '—'}，` +
+            `科创50 ${sci ? (sci.changePct >= 0 ? '<span class="up">上涨' + sci.changePct.toFixed(2) + '%</span>' : '<span class="down">下跌' + Math.abs(sci.changePct).toFixed(2) + '%</span>') : '—'}。` +
+            `跟踪池${totalStocks}只：<span class="up">上涨${upStocks}</span> · <span class="down">下跌${downStocks}</span>。` +
+            '市场整体交投正常，等待新的驱动因素。',
+      impact: '➡ 市场平淡，关注后续催化剂',
+      impactCls: 'neutral',
     });
   }
 
