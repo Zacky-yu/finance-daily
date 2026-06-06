@@ -468,6 +468,7 @@ async function fetchAll() {
     data.news = nr.news || [];
     data.newsCached = nr.cached || false;
     data.newsStale = nr.stale || false;
+    data.fedEvents = [];
 
     lastData = data;
     render(data);
@@ -518,7 +519,8 @@ function render(data) {
   renderForeignPreview(data);
   renderTomorrowFocus(data);
   renderStrategy(data);
-  renderRecommendations(data);
+    renderFedTracking(data);
+renderRecommendations(data);
 }
 
 // ═══ 指数 ═══
@@ -1217,6 +1219,60 @@ function renderStrategy(data) {
 }
 
 // ═══ Recommendations ═══
+function renderFedTracking(data) {
+  var fed = data.fedEvents || [];
+  var list = document.getElementById('fedTracking');
+  if (!list) return;
+  var fomc = [
+    { date: '2026-01-28', label: '1月FOMC会议', type: '利率决议', status: '已结束', desc: '' },
+    { date: '2026-03-18', label: '3月FOMC会议', type: '利率决议+经济预测+点阵图', status: '已结束', desc: '' },
+    { date: '2026-05-06', label: '5月FOMC会议', type: '利率决议', status: '已结束', desc: '' },
+    { date: '2026-06-17', label: '6月FOMC会议', type: '利率决议+经济预测+点阵图', status: '即将召开', desc: '📌 季度会议，市场高度关注' },
+    { date: '2026-07-29', label: '7月FOMC会议', type: '利率决议', status: '待召开', desc: '' },
+    { date: '2026-09-16', label: '9月FOMC会议', type: '利率决议+经济预测+点阵图', status: '待召开', desc: '季度会议' },
+    { date: '2026-11-04', label: '11月FOMC会议', type: '利率决议', status: '待召开', desc: '' },
+    { date: '2026-12-16', label: '12月FOMC会议', type: '利率决议+经济预测+点阵图', status: '待召开', desc: '季度会议+年终总结' },
+  ];
+  var econ = [
+    { date: '每月初', label: '美国非农就业报告', desc: '每月第一个周五' },
+    { date: '每月中', label: '美国CPI通胀数据', desc: '每月中旬公布' },
+    { date: '每月中', label: '美联储褐皮书', desc: 'FOMC会议前2周发布' },
+    { date: '每周三', label: 'EIA原油库存', desc: '每周三公布' },
+    { date: '每周四', label: '初请失业金人数', desc: '每周四公布' },
+  ];
+  var html = '';
+  html += '<div style="margin-bottom:10px;"><div style="font-size:0.85em;color:var(--accent);margin-bottom:6px;">📅 2026年FOMC会议日程</div>';
+  for (var m in fomc) {
+    var mi = fomc[m];
+    var sc = mi.status === '即将召开' ? 'var(--orange)' : 'var(--text-dim)';
+    var hl = mi.status === '即将召开' ? 'style="border-left:3px solid var(--orange);"' : '';
+    html += '<div class="recommend" ' + hl + ' style="border-left-color:var(--orange);">';
+    html += '<div class="r-tag" style="background:rgba(255,152,0,0.2);color:var(--orange);">' + mi.label + '</div>';
+    html += '<div class="r-name">' + mi.date + ' <span style="font-size:0.8em;color:' + sc + ';">[' + mi.status + ']</span></div>';
+    html += '<div class="r-reason">' + mi.type + (mi.desc ? '<br>' + mi.desc : '') + '</div></div>';
+  }
+  html += '</div>';
+  html += '<div><div style="font-size:0.85em;color:var(--accent);margin-bottom:6px;">📊 美国重要经济数据发布时间</div>';
+  html += '<div class="stock-table">';
+  for (var e in econ) {
+    var ei = econ[e];
+    html += '<div class="stock-row"><div><span class="stock-name">' + ei.label + '</span><span class="stock-code">' + ei.date + '</span></div>';
+    html += '<div style="font-size:0.8em;color:var(--text-dim);">' + ei.desc + '</div></div>';
+  }
+  html += '</div></div>';
+  if (fed.length > 0) {
+    html += '<div style="margin-top:12px;"><div style="font-size:0.85em;color:var(--accent);margin-bottom:6px;">📰 近期美联储动态</div>';
+    for (var f = 0; f < fed.length && f < 5; f++) {
+      html += '<div class="news-item" style="padding:10px 12px;">';
+      html += '<div class="news-title" style="font-size:0.85em;"><a href="' + (fed[f].link || '#') + '" target="_blank" style="color:var(--accent);text-decoration:none;">' + (fed[f].title || '') + '</a></div>';
+      html += '<div class="news-meta">' + (fed[f].pubDate || '') + '</div></div>';
+    }
+    html += '</div>';
+  }
+  list.innerHTML = html;
+}
+
+// ═══ Recommendations ═══
 function renderRecommendations(data) {
   const list = document.getElementById('recommendList');
   const stk = data.stocks || [];
@@ -1309,3 +1365,9 @@ startAutoRefresh();
 </script>
 </body>
 </html>
+    <!-- ═══ 美联储追踪 ═══ -->
+    <div class="section">
+      <div class="section-title" style="color:var(--orange);">🏛️ 美联储 & 美国会议追踪</div>
+      <div id="fedTracking"></div>
+    </div>
+
