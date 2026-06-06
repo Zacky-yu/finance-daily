@@ -278,6 +278,12 @@ header .auto-status { font-size: 0.72em; color: var(--text-dim); }
       <div id="recommendList"></div>
     </div>
 
+    <!-- ═══ 美联储追踪 ═══ -->
+    <div class="section">
+      <div class="section-title" style="color:var(--orange);">🏛️ 美联储 & 美国会议追踪</div>
+      <div id="fedTracking"></div>
+    </div>
+
     <!-- Footer -->
     <div class="footer">
       <p>🐉 小龙财经日报 · 实时版</p>
@@ -519,6 +525,7 @@ function render(data) {
   renderTomorrowFocus(data);
   renderStrategy(data);
   renderRecommendations(data);
+  renderFedTracking(data);
 }
 
 // ═══ 指数 ═══
@@ -685,6 +692,25 @@ function renderGoldSilver(gs) {
     <span style="font-size:0.8em;color:var(--text-dim);">国际金价参考自腾讯财经黄金ETF推算。</span>`;
 }
 
+// ═══ 翻译缓存 ═══
+const transCache = {};
+async function translateEnToZh(text) {
+  if (!text || text.length < 2) return text;
+  const key = text.slice(0, 100);
+  if (transCache[key]) return transCache[key];
+  try {
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&q=' + encodeURIComponent(text.slice(0, 1000));
+    const resp = await fetch(url);
+    const json = await resp.json();
+    const result = (json[0] || []).map(p => p[0]).filter(Boolean).join('');
+    transCache[key] = result || text;
+    return transCache[key];
+  } catch(e) {
+    console.log('Translation failed:', e);
+    return text;
+  }
+}
+
 // ═══ 实时资讯 ═══
 function renderNews(news) {
   const list = document.getElementById('newsList');
@@ -693,17 +719,51 @@ function renderNews(news) {
     return;
   }
   const tags = ['半导体', '芯片', 'AI', 'Intel', 'AMD', 'Nvidia', 'TSMC', 'Broadcom', '存储', '内存', 'DRAM', 'NAND', 'Flash', 'HBM', 'quantum', 'cyber', 'Fed'];
-  list.innerHTML = news.slice(0, 10).map(item => {
+  // First render with loading indicator while translating
+  list.innerHTML = news.slice(0, 10).map((item, i) => {
     const tag = tags.find(t => (item.title || '').includes(t) || (item.content || '').includes(t));
     const tagHtml = tag
       ? `<span class="card-tag tag-semi">${tag}</span>`
       : `<span class="card-tag tag-market">资讯</span>`;
-    return `<div class="news-item">
+    return `<div class="news-item" id="ni-${i}">
       <div class="news-title">${tagHtml}<a href="${item.link || '#'}" target="_blank" rel="noopener">${item.title || ''}</a></div>
       <div class="news-meta"><span>MarketWatch</span><span>${formatDate(item.pubDate)}</span></div>
       ${item.content ? `<div class="news-desc">${item.content.substring(0, 200)}</div>` : ''}
+      <div class="news-trans" style="font-size:0.85em;color:#81c784;margin-top:3px;">🔄 翻译中...</div>
     </div>`;
   }).join('');
+  // Async translate all items
+  (async () => {
+    for (let i = 0; i < news.length && i < 10; i++) {
+      const item = news[i];
+      const id = 'ni-' + i;
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const [transTitle, transDesc] = await Promise.all([
+        translateEnToZh(item.title || ''),
+        item.content ? translateEnToZh(item.content.substring(0, 300)) : Promise.resolve(''),
+      ]);
+      const titleA = el.querySelector('.news-title a');
+      const origTitle = titleA ? titleA.textContent : item.title;
+      const descEl = el.querySelector('.news-desc');
+      const transEl = el.querySelector('.news-trans');
+      // Replace title link text with Chinese
+      if (titleA) titleA.textContent = transTitle || origTitle;
+      // Update description area: show Chinese + below show original English title as reference
+      const engLine = '<span style="font-size:0.78em;color:#536471;">📖 ' + escHtml(origTitle) + '</span>';
+      if (descEl && transDesc) {
+        descEl.innerHTML = transDesc + '<br>' + engLine;
+      } else if (transEl) {
+        // If no description, show original title below title
+        transEl.innerHTML = engLine;
+        transEl.style.color = '#536471';
+      } else {
+        el.innerHTML += '<div class="news-desc" style="font-size:0.78em;color:#536471;">' + engLine + '</div>';
+      }
+      // Remove loading indicator only if it exists
+      if (transEl && transEl.textContent.includes('翻译')) transEl.remove();
+    }
+  })();
 }
 
 // ═══ 重要消息解读 ═══
@@ -1181,6 +1241,77 @@ function renderStrategy(data) {
   </div>`;
 }
 
+// ═══ 美联储 & 美国会议追踪 ═══
+function renderFedTracking(data) {
+  const fed = data.fedEvents || [];
+  const list = document.getElementById('fedTracking');
+  if (!list) return;
+
+  // Hardcoded 2026 FOMC meeting schedule
+  const fomc2026 = [
+    { date: '2026-01-28', label: '1月FOMC会议', type: '利率决议', status: '已结束', desc: '维持利率不变，关注就业数据' },
+    { date: '2026-03-18', label: '3月FOMC会议', type: '利率决议+经济预测+点阵图', status: '已结束', desc: '季度会议，公布利率点阵图和经济预测' },
+    { date: '2026-05-06', label: '5月FOMC会议', type: '利率决议', status: '已结束', desc: '' },
+    { date: '2026-06-17', label: '6月FOMC会议', type: '利率决议+经济预测+点阵图', status: '即将召开', desc: '📌 季度会议，市场高度关注' },
+    { date: '2026-07-29', label: '7月FOMC会议', type: '利率决议', status: '待召开', desc: '' },
+    { date: '2026-09-16', label: '9月FOMC会议', type: '利率决议+经济预测+点阵图', status: '待召开', desc: '季度会议' },
+    { date: '2026-11-04', label: '11月FOMC会议', type: '利率决议', status: '待召开', desc: '' },
+    { date: '2026-12-16', label: '12月FOMC会议', type: '利率决议+经济预测+点阵图', status: '待召开', desc: '季度会议+年终总结' },
+  ];
+
+  // Key US economic data releases (approximate schedule)
+  const econEvents = [
+    { date: '每月初', label: '美国非农就业报告', desc: '每月第一个周五' },
+    { date: '每月中', label: '美国CPI通胀数据', desc: '每月中旬公布' },
+    { date: '每月中', label: '美联储褐皮书', desc: 'FOMC会议前2周发布' },
+    { date: '每周三', label: 'EIA原油库存', desc: '每周三公布' },
+    { date: '每周四', label: '初请失业金人数', desc: '每周四公布' },
+  ];
+
+  let html = '';
+
+  // FOMC Calendar
+  html += '<div style="margin-bottom:10px;">';
+  html += '<div style="font-size:0.85em;color:var(--accent);margin-bottom:6px;">📅 2026年FOMC会议日程</div>';
+  for (const m of fomc2026) {
+    const statusColor = m.status === '即将召开' ? 'var(--orange)' : m.status === '已结束' ? 'var(--text-dim)' : 'var(--text-dim)';
+    const highlight = m.status === '即将召开' ? 'style="border-left:3px solid var(--orange);"' : '';
+    html += '<div class="recommend" ' + highlight + ' style="border-left-color:var(--orange);">';
+    html += '  <div class="r-tag" style="background:rgba(255,152,0,0.2);color:var(--orange);">' + m.label + '</div>';
+    html += '  <div class="r-name">' + m.date + ' <span style="font-size:0.8em;color:' + statusColor + ';">[' + m.status + ']</span></div>';
+    html += '  <div class="r-reason">' + m.type + (m.desc ? '<br>' + m.desc : '') + '</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // US Economic Calendar
+  html += '<div>';
+  html += '<div style="font-size:0.85em;color:var(--accent);margin-bottom:6px;">📊 美国重要经济数据发布时间</div>';
+  html += '<div class="stock-table">';
+  for (const e of econEvents) {
+    html += '<div class="stock-row">';
+    html += '  <div><span class="stock-name">' + e.label + '</span><span class="stock-code">' + e.date + '</span></div>';
+    html += '  <div style="font-size:0.8em;color:var(--text-dim);">' + e.desc + '</div>';
+    html += '</div>';
+  }
+  html += '</div></div>';
+
+  // Recent Fed press releases from RSS
+  if (fed.length > 0) {
+    html += '<div style="margin-top:12px;">';
+    html += '<div style="font-size:0.85em;color:var(--accent);margin-bottom:6px;">📰 近期美联储动态</div>';
+    for (const f of fed.slice(0, 5)) {
+      html += '<div class="news-item" style="padding:10px 12px;">';
+      html += '  <div class="news-title" style="font-size:0.85em;"><a href="' + (f.link || '#') + '" target="_blank" style="color:var(--accent);text-decoration:none;">' + (f.title || '') + '</a></div>';
+      html += '  <div class="news-meta">' + (f.pubDate || '') + '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+
+  list.innerHTML = html;
+}
+
 // ═══ Recommendations ═══
 function renderRecommendations(data) {
   const list = document.getElementById('recommendList');
@@ -1258,6 +1389,11 @@ function formatDate(str) {
     const d = new Date(str);
     return d.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   } catch { return str; }
+}
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
 }
 
 // ─── Auto-refresh ──────────────────────────────────────────────
