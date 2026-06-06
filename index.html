@@ -560,7 +560,7 @@ function renderIndices(indices) {
       : `<span class="down">创业板承压 ${cy.changePct.toFixed(2)}%</span>`;
   }
 
-  an.innerHTML = `<div class="a-title">📌 盘面点评</div>
+  an.innerHTML = `<div class="a-title">���� 盘面点评</div>
     <strong>上证</strong>${sh ? (sh.changePct >= 0 ? '小幅上涨' : '小幅回落') : '—'}${sh ? ` (${sh.changePct.toFixed(2)}%)` : ''}，
     市场整体${trendNote}。<br>
     ${sciNote}，${cyNote}。<br>
@@ -633,7 +633,7 @@ function renderStocks(stocks) {
     html += `<div style="margin-bottom:6px;">${highlights.join('、')}，存储芯片板块整体走强！</div>`;
     html += `<div>AI服务器对HBM和DDR5需求加速放量，叠加存储芯片国产替代持续推进，产业链上游（设备、材料）获得资金强烈关注。</div>`;
   } else if (weakStocks.length > 0) {
-    html += `<div style="margin-bottom:6px;">${weakStocks.join('、')}。半导体板块整体表现偏弱，等待方向选择。</div>`;
+    html += `<div style="margin-bottom:6px;">${weakStocks.join('、')}。半导体板块整体��现偏弱，等待方向选择。</div>`;
     html += `<div>存储芯片方向短期承压，但中长期逻辑（国产化+AI驱动）不变，回调是低吸机会。</div>`;
   } else {
     html += `<div>存储芯片板块今日表现平稳，关注后续资金动向。存储涨价周期+国产替代双主线逻辑持续。</div>`;
@@ -687,26 +687,61 @@ function renderGoldSilver(gs) {
 
 // ═══ 实时资讯 ═══
 function renderNews(news) {
-  const list = document.getElementById('newsList');
+  var list = document.getElementById('newsList');
   if (!news || news.length === 0) {
     list.innerHTML = '<div class="news-item">📭 暂无新闻数据。可手动点击"刷新数据"重试（每小时刷新一次以节省配额）。</div>';
     return;
   }
-  const tags = ['半导体', '芯片', 'AI', 'Intel', 'AMD', 'Nvidia', 'TSMC', 'Broadcom', '存储', '内存', 'DRAM', 'NAND', 'Flash', 'HBM', 'quantum', 'cyber', 'Fed'];
-  list.innerHTML = news.slice(0, 10).map(item => {
-    const tag = tags.find(t => (item.title || '').includes(t) || (item.content || '').includes(t));
-    const tagHtml = tag
-      ? `<span class="card-tag tag-semi">${tag}</span>`
-      : `<span class="card-tag tag-market">资讯</span>`;
-    return `<div class="news-item">
-      <div class="news-title">${tagHtml}<a href="${item.link || '#'}" target="_blank" rel="noopener">${item.title || ''}</a></div>
-      <div class="news-meta"><span>MarketWatch</span><span>${formatDate(item.pubDate)}</span></div>
-      ${item.content ? `<div class="news-desc">${item.content.substring(0, 200)}</div>` : ''}
-    </div>`;
+  var tags = ['半导体', '芯片', 'AI', 'Intel', 'AMD', 'Nvidia', 'TSMC', 'Broadcom', '存储', '内存', 'DRAM', 'NAND', 'Flash', 'HBM', 'quantum', 'cyber', 'Fed'];
+  list.innerHTML = news.slice(0, 10).map(function(item, i) {
+    var tag = tags.find(function(t) { return (item.title || '').includes(t) || (item.content || '').includes(t); });
+    var tagHtml = tag ? '<span class="card-tag tag-semi">' + tag + '</span>' : '<span class="card-tag tag-market">资讯</span>';
+    return '<div class="news-item" id="ni-' + i + '">'
+      + '<div class="news-title">' + tagHtml + '<a href="' + (item.link || '#') + '" target="_blank" rel="noopener">' + escHtml(item.title || '') + '</a></div>'
+      + '<div class="news-meta"><span>MarketWatch</span><span>' + formatDate(item.pubDate) + '</span></div>'
+      + (item.content ? '<div class="news-desc">' + escHtml(item.content.substring(0, 200)) + '</div>' : '')
+      + '<div class="news-trans" style="font-size:0.72em;color:#81c784;margin-top:2px;">🔄 翻译中...</div>'
+      + '</div>';
   }).join('');
-}
-
-// ═══ 重要消息解读 ═══
+  (function() {
+    var cache = {};
+    async function trans(text) {
+      if (!text || text.length < 3) return text;
+      var key = text.slice(0, 80);
+      if (cache[key]) return cache[key];
+      try {
+        var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&q=' + encodeURIComponent(text.slice(0, 1000));
+        var resp = await fetch(url);
+        var json = await resp.json();
+        var r = (json[0] || []).map(function(p) { return p[0]; }).filter(Boolean).join('');
+        cache[key] = r || text;
+        return cache[key];
+      } catch(e) { return text; }
+    }
+    (async function() {
+      for (var i = 0; i < news.length && i < 10; i++) {
+        var el = document.getElementById('ni-' + i);
+        if (!el) continue;
+        var item = news[i];
+        var cnTitle = await trans(item.title || '');
+        var cnDesc = item.content ? await trans(item.content.substring(0, 300)) : '';
+        var titleA = el.querySelector('.news-title a');
+        var origTitle = titleA ? titleA.textContent : item.title;
+        var descEl = el.querySelector('.news-desc');
+        var transEl = el.querySelector('.news-trans');
+        if (titleA) titleA.textContent = cnTitle || origTitle;
+        var engLine = '<span style="font-size:0.75em;color:#536471;">📖 ' + escHtml(origTitle) + '</span>';
+        if (descEl && cnDesc) {
+          descEl.innerHTML = cnDesc + '<br>' + engLine;
+        } else if (transEl) {
+          transEl.innerHTML = engLine;
+          transEl.style.color = '#536471';
+        }
+        if (transEl && transEl.textContent.indexOf('翻译') >= 0) transEl.remove();
+      }
+    })();
+  })();
+}// ═══ 重要消息解读 ═══
 function renderNewsAnalysis(data) {
   const list = document.getElementById('newsAnalysis');
   const news = data.news || [];
@@ -1029,7 +1064,7 @@ function renderTomorrowFocus(data) {
 
   // 3. Specific stock watch (data-driven)
   if (zd && Math.abs(zd.changePct) > 3) {
-    events.push({ type: '🎯 个股', event: `兆易创新${zd.changePct > 0 ? '强势' : '回调'}后走势观察`, target: '603986', color: 'var(--pink)' });
+    events.push({ type: '🎯 个���', event: `兆易创新${zd.changePct > 0 ? '强势' : '回调'}后走势观察`, target: '603986', color: 'var(--pink)' });
   }
   if (hf && Math.abs(hf.changePct) > 5) {
     events.push({ type: '🎯 个股', event: `华峰测控${hf.changePct > 0 ? '大涨' : '大跌'}后方向确认`, target: '688200', color: 'var(--pink)' });
@@ -1060,7 +1095,7 @@ function renderStrategy(data) {
   const indices = data.indices || [];
   const news = data.news || [];
 
-  const sh = indices.find(i => i.name === '上证指数');
+  const sh = indices.find(i => i.name === '���证指数');
   const sci = indices.find(i => i.name === '科创50');
   const cy = indices.find(i => i.name === '创业板指');
   const zd = stocks.find(s => s.code === '603986');
@@ -1106,7 +1141,7 @@ function renderStrategy(data) {
       semiStrategy += ` 板块整体涨幅温和，趋势健康。**可逢低加仓，关注存储芯片和半导体设备方向。**`;
     }
   } else if (semiDownCount >= 3) {
-    semiStrategy = `半导体板块今日承压（${semiDownCount}只跌超2%）。短线受情绪影响，但**中期逻辑不变（国产替代+存储涨价），回调反而是低吸机会。**关注前期支撑位。`;
+    semiStrategy = `半导体板块今日承压（${semiDownCount}只跌超2%）。短���受情绪影响，但**中期逻辑不变（国产替代+存储涨价），回调反而是低吸机会。**关注前期支撑位。`;
   } else {
     semiStrategy = '半导体板块今日表现平稳，关注明日方向选择。**从中期角度看，存储芯片和半导体设备仍是核心主线，可逢低布局。**';
   }
@@ -1252,6 +1287,8 @@ function renderRecommendations(data) {
 }
 
 // ─── Helper ────────────────────────────────────────────────────
+function escHtml(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
 function formatDate(str) {
   if (!str) return '';
   try {
@@ -1260,7 +1297,7 @@ function formatDate(str) {
   } catch { return str; }
 }
 
-// ─── Auto-refresh ──────────────────────────────────────────────
+// ─── Auto-refresh ─────────────────────────────────────────────���
 function startAutoRefresh() {
   if (autoTimer) clearInterval(autoTimer);
   autoTimer = setInterval(fetchAll, 5 * 60 * 1000);
