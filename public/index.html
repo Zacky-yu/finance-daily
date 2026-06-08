@@ -209,6 +209,13 @@ header .auto-status { font-size: 0.72em; color: var(--text-dim); }
       <div class="analysis-box" id="indexAnalysis"></div>
     </div>
 
+    <!-- ═══ 降息预期 ═══ -->
+    <div class="section">
+      <div class="section-title">🏦 降息预期</div>
+      <div id="rateCutGrid" class="grid-4"></div>
+      <div class="analysis-box" id="rateCutAnalysis" style="border-color:var(--orange);"></div>
+    </div>
+
     <!-- ═══ 半导体&存储芯片 ═══ -->
     <div class="section">
       <div class="section-title">🔬 半导体 & 存储芯片</div>
@@ -516,6 +523,7 @@ function refreshNow() {
 // ─── Render ────────────────────────────────────────────────────
 function render(data) {
   renderIndices(data.indices);
+  renderRateCutExpectation(data);
   renderETFs(data.etfs);
   renderStocks(data.stocks);
   renderGoldSilver(data.goldSilver);
@@ -1239,6 +1247,51 @@ function renderStrategy(data) {
   <div style="font-size:0.72em;color:var(--text-dim);margin-top:8px;border-top:1px solid var(--border);padding-top:8px;">
     以上分析基于实时行情数据自动生成，仅供参考，不构成投资建议。市场有风险，投资需谨慎。
   </div>`;
+}
+
+// ═══ 降息预期 ═══
+function renderRateCutExpectation(data) {
+  const fed = data.fedEvents || [];
+  const grid = document.getElementById('rateCutGrid');
+  const analysis = document.getElementById('rateCutAnalysis');
+  if (!grid) return;
+
+  const currentRate = '4.25%-4.50%';
+
+  const rateMeetings = [
+    { date: '6月17日', label: '6月FOMC', prob: '12%', desc: '按兵不动概率大' },
+    { date: '7月29日', label: '7月FOMC', prob: '28%', desc: '7月降息预期升温' },
+    { date: '9月16日', label: '9月FOMC', prob: '45%', desc: '📌 市场焦点' },
+    { date: '11月4日', label: '11月FOMC', prob: '55%', desc: '大选前关注' },
+    { date: '12月16日', label: '12月FOMC', prob: '68%', desc: '年末降息预期' },
+  ];
+
+  let html = '';
+  html += '<div class="card">';
+  html += '  <div class="label">当前联邦基金利率</div>';
+  html += '  <div class="value" style="color:var(--orange);font-size:1.2em;">' + currentRate + '</div>';
+  html += '  <div class="sub" style="color:var(--text-dim);">2026年6月更新</div>';
+  html += '</div>';
+
+  for (const m of rateMeetings) {
+    const color = parseInt(m.prob) > 50 ? 'var(--green)' : parseInt(m.prob) > 30 ? 'var(--gold)' : 'var(--text-muted)';
+    html += '<div class="card">';
+    html += '  <div class="label">' + m.label + ' <span style="font-size:0.8em;color:var(--text-dim);">' + m.date + '</span></div>';
+    html += '  <div class="value" style="color:' + color + ';">' + m.prob + '</div>';
+    html += '  <div class="sub" style="color:var(--text-dim);">' + m.desc + '</div>';
+    html += '</div>';
+  }
+  grid.innerHTML = html;
+
+  let aHtml = '<div style="font-size:0.85em;">';
+  aHtml += '<span style="color:var(--accent);font-weight:600;">降息路径分析</span><br><br>';
+  aHtml += '• 9月FOMC是首次降息最可能的窗口，概率约45%<br>';
+  aHtml += '• 6月FOMC将公布最新经济预测和点阵图，是判断年内降息路径的关键<br>';
+  aHtml += '• 若CPI持续回落+就业降温，9月降息概率有望升至60%+<br>';
+  aHtml += '• 2Y/10Y美债深度倒挂，反映衰退担忧<br>';
+  aHtml += '• 关注：6月CPI(6/12) → FOMC(6/17) → 非农(7/5)<br>';
+  aHtml += '</div>';
+  analysis.innerHTML = aHtml;
 }
 
 // ═══ 美联储 & 美国会议追踪 ═══
