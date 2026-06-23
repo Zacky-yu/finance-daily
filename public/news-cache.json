@@ -1,7 +1,96 @@
 {
-  "lastUpdated": "2026-06-23T07:14:01.895Z",
+  "lastUpdated": "2026-06-23T07:22:40.594Z",
   "date": "2026-06-23",
   "total": 80,
+  "currentRate": "4.25%-4.50%",
+  "fomcSchedule": [
+    {
+      "date": "2026-01-28",
+      "label": "1月FOMC会议",
+      "type": "利率决议",
+      "status": "已结束",
+      "desc": "已公布利率决议"
+    },
+    {
+      "date": "2026-03-18",
+      "label": "3月FOMC会议",
+      "type": "利率决议+经济预测+点阵图",
+      "status": "已结束",
+      "desc": "已公布利率点阵图和经济预测"
+    },
+    {
+      "date": "2026-05-06",
+      "label": "5月FOMC会议",
+      "type": "利率决议",
+      "status": "已结束",
+      "desc": "已公布利率决议"
+    },
+    {
+      "date": "2026-06-17",
+      "label": "6月FOMC会议",
+      "type": "利率决议+经济预测+点阵图",
+      "status": "已结束",
+      "desc": "已公布利率点阵图和经济预测"
+    },
+    {
+      "date": "2026-07-29",
+      "label": "7月FOMC会议",
+      "type": "利率决议",
+      "status": "待召开",
+      "desc": ""
+    },
+    {
+      "date": "2026-09-16",
+      "label": "9月FOMC会议",
+      "type": "利率决议+经济预测+点阵图",
+      "status": "待召开",
+      "desc": ""
+    },
+    {
+      "date": "2026-11-04",
+      "label": "11月FOMC会议",
+      "type": "利率决议",
+      "status": "待召开",
+      "desc": ""
+    },
+    {
+      "date": "2026-12-16",
+      "label": "12月FOMC会议",
+      "type": "利率决议+经济预测+点阵图",
+      "status": "待召开",
+      "desc": ""
+    }
+  ],
+  "fedEvents": [
+    {
+      "title": "Building-Products Distributor QXO Launches Hostile Bid for Beacon",
+      "link": "https://www.wsj.com/articles/building-products-distributor-qxo-launching-hostile-bid-for-beacon-de024410?mod=rss_markets_main",
+      "pubDate": "Mon, 27 Jan 2025 08:28:00 -0500",
+      "content": "QXO is taking its offer directly to shareholders after being rebuffed on several occasions.",
+      "source": "WSJ-Markets"
+    },
+    {
+      "title": "&apos;I like their money&apos;: Trump threatens lawsuits against ABC for reporting on Reflecting Pool",
+      "link": "https://www.cnbc.com/2026/06/23/trump-threatens-lawsuits-against-abc-network-for-reporting-on-reflecting-pool.html",
+      "pubDate": "Tue, 23 Jun 2026 02:54:16 GMT",
+      "content": "The latest action against ABC comes as the broadcaster faces two investigations from the Federal Communications Commission.",
+      "source": "CNBC"
+    },
+    {
+      "title": "Tesla faces federal probe after Model 3 slams into Texas home, killing 76-year-old",
+      "link": "https://www.cnbc.com/2026/06/22/tesla-nhtsa-model-3-crash-autopilot-katy-texas.html",
+      "pubDate": "Tue, 23 Jun 2026 00:44:14 GMT",
+      "content": "Harris County authorities said that the driver, Michael Butler, said that he had been using Tesla's partially automated driving systems.",
+      "source": "CNBC"
+    },
+    {
+      "title": "Alan Greenspan, former chairman of the Fed, dies at age 100",
+      "link": "https://www.cnbc.com/2026/06/22/alan-greenspan-former-chairman-of-the-fed-dies-at-age-100.html",
+      "pubDate": "Mon, 22 Jun 2026 14:39:38 GMT",
+      "content": "Alan Greenspan presided over the Federal Reserve for 19 years under four presidents and mastered the art of obfuscation known as Fedspeak.",
+      "source": "CNBC"
+    }
+  ],
   "items": [
     {
       "title": "These 6 fast-growing stocks sit at the cutting edge of space and military technology",

@@ -1256,10 +1256,9 @@ function renderRateCutExpectation(data) {
   const analysis = document.getElementById('rateCutAnalysis');
   if (!grid) return;
 
-  const currentRate = '4.25%-4.50%';
+  const currentRate = data.currentRate || '4.25%-4.50%';
 
   const rateMeetings = [
-    { date: '6月17日', label: '6月FOMC', prob: '12%', desc: '按兵不动概率大' },
     { date: '7月29日', label: '7月FOMC', prob: '28%', desc: '7月降息预期升温' },
     { date: '9月16日', label: '9月FOMC', prob: '45%', desc: '📌 市场焦点' },
     { date: '11月4日', label: '11月FOMC', prob: '55%', desc: '大选前关注' },
@@ -1300,17 +1299,31 @@ function renderFedTracking(data) {
   const list = document.getElementById('fedTracking');
   if (!list) return;
 
-  // Hardcoded 2026 FOMC meeting schedule
-  const fomc2026 = [
-    { date: '2026-01-28', label: '1月FOMC会议', type: '利率决议', status: '已结束', desc: '维持利率不变，关注就业数据' },
-    { date: '2026-03-18', label: '3月FOMC会议', type: '利率决议+经济预测+点阵图', status: '已结束', desc: '季度会议，公布利率点阵图和经济预测' },
-    { date: '2026-05-06', label: '5月FOMC会议', type: '利率决议', status: '已结束', desc: '' },
-    { date: '2026-06-17', label: '6月FOMC会议', type: '利率决议+经济预测+点阵图', status: '即将召开', desc: '📌 季度会议，市场高度关注' },
-    { date: '2026-07-29', label: '7月FOMC会议', type: '利率决议', status: '待召开', desc: '' },
-    { date: '2026-09-16', label: '9月FOMC会议', type: '利率决议+经济预测+点阵图', status: '待召开', desc: '季度会议' },
-    { date: '2026-11-04', label: '11月FOMC会议', type: '利率决议', status: '待召开', desc: '' },
-    { date: '2026-12-16', label: '12月FOMC会议', type: '利率决议+经济预测+点阵图', status: '待召开', desc: '季度会议+年终总结' },
-  ];
+  // FOMC schedule from server cache (dynamic), fallback to local calculation
+  const fomc2026 = data.fomcSchedule || (() => {
+    const now = new Date();
+    return [
+      { date: '2026-01-28', label: '1月FOMC会议', type: '利率决议' },
+      { date: '2026-03-18', label: '3月FOMC会议', type: '利率决议+经济预测+点阵图' },
+      { date: '2026-05-06', label: '5月FOMC会议', type: '利率决议' },
+      { date: '2026-06-17', label: '6月FOMC会议', type: '利率决议+经济预测+点阵图' },
+      { date: '2026-07-29', label: '7月FOMC会议', type: '利率决议' },
+      { date: '2026-09-16', label: '9月FOMC会议', type: '利率决议+经济预测+点阵图' },
+      { date: '2026-11-04', label: '11月FOMC会议', type: '利率决议' },
+      { date: '2026-12-16', label: '12月FOMC会议', type: '利率决议+经济预测+点阵图' },
+    ].map(m => {
+      const d = new Date(m.date);
+      const passed = now >= d;
+      const upcoming = now >= new Date(d.getTime() - 14*24*60*60*1000) && !passed;
+      return {
+        ...m,
+        status: passed ? '已结束' : upcoming ? '即将召开' : '待召开',
+        desc: passed && m.type.includes('经济预测') ? '已公布利率点阵图和经济预测' :
+              passed ? '已公布利率决议' :
+              upcoming && m.type.includes('经济预测') ? '季度会议，市场高度关注' : ''
+      };
+    });
+  })();
 
   // Key US economic data releases (approximate schedule)
   const econEvents = [
