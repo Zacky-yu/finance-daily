@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-23T07:22:40.594Z",
+  "lastUpdated": "2026-06-23T10:23:18.004Z",
   "date": "2026-06-23",
   "total": 80,
   "currentRate": "4.25%-4.50%",
@@ -63,11 +63,25 @@
   ],
   "fedEvents": [
     {
+      "title": "This billionaire trading tycoon argues the public is looking at federal debt all wrong",
+      "link": "https://www.marketwatch.com/story/this-billionaire-trading-tycoon-argues-the-public-is-looking-at-federal-debt-all-wrong-7df0467d?mod=mw_rss_topstories",
+      "pubDate": "Tue, 23 Jun 2026 09:10:00 GMT",
+      "content": "The conventional wisdom is that federal government debt &#x2014; $39.1 trillion, or a mere $31.6 trillion when accounting for the liabilities owed to itself &#x2014; is astronomically high. Jeff Yass said that isn&#x2019;t the right comparison.",
+      "source": "MarketWatch"
+    },
+    {
       "title": "Building-Products Distributor QXO Launches Hostile Bid for Beacon",
       "link": "https://www.wsj.com/articles/building-products-distributor-qxo-launching-hostile-bid-for-beacon-de024410?mod=rss_markets_main",
       "pubDate": "Mon, 27 Jan 2025 08:28:00 -0500",
       "content": "QXO is taking its offer directly to shareholders after being rebuffed on several occasions.",
       "source": "WSJ-Markets"
+    },
+    {
+      "title": "AI groups spend $20 million going head-to-head in New York race pitting Bores, Lasher, Schlossberg",
+      "link": "https://www.cnbc.com/2026/06/23/ai-groups-spend-20-million-in-new-york-race-pitting-bores-lasher-schlossberg.html",
+      "pubDate": "Tue, 23 Jun 2026 09:45:01 GMT",
+      "content": "Companies are spending big to shape AI policies at the federal level. And the Manhattan House Democratic primary will be a test of where voters stand.",
+      "source": "CNBC"
     },
     {
       "title": "&apos;I like their money&apos;: Trump threatens lawsuits against ABC for reporting on Reflecting Pool",
@@ -92,6 +106,54 @@
     }
   ],
   "items": [
+    {
+      "title": "&#x2018;It feels like a medical miracle&#x2019;: How did a single QR code coupon cut my $618 Walgreens prescription to $15?",
+      "link": "https://www.marketwatch.com/story/it-feels-like-a-medical-miracle-how-did-a-single-qr-code-coupon-cut-my-618-walgreens-prescription-to-15-524a1151?mod=mw_rss_topstories",
+      "pubDate": "Tue, 23 Jun 2026 10:15:00 GMT",
+      "content": "&#x201c;This medication was generic.&#x201d;",
+      "source": "MarketWatch",
+      "section": "其他"
+    },
+    {
+      "title": "The AI market has become a &#x2018;rubber band&#x2019; &#x2014; the question now is how far it can stretch, says Goldman strategist",
+      "link": "https://www.marketwatch.com/story/the-ai-market-has-become-a-rubber-band-the-question-now-is-how-far-it-can-stretch-says-goldman-strategist-70ed46b7?mod=mw_rss_topstories",
+      "pubDate": "Tue, 23 Jun 2026 09:50:00 GMT",
+      "content": "Rich Privorotsky, strategist at Goldman Sachs, said that while so-called hyperscalers continue to increase their capital expenditure forecasts, artificial intelligence software is becoming cheaper to develop elsewhere",
+      "source": "MarketWatch",
+      "section": "芯片半导体"
+    },
+    {
+      "title": "I want to leave everything to my sons, but I&#x2019;m terrified they&#x2019;ll give it to my ex-husband. How do I prevent this?",
+      "link": "https://www.marketwatch.com/story/i-want-to-leave-everything-to-my-sons-but-im-terrified-theyll-give-it-to-my-ex-husband-how-do-i-prevent-this-8cfc752c?mod=mw_rss_topstories",
+      "pubDate": "Tue, 23 Jun 2026 09:15:00 GMT",
+      "content": "&#x201c;I would not like my money to fall into the hands of my former spouse.&#x201d;",
+      "source": "MarketWatch",
+      "section": "其他"
+    },
+    {
+      "title": "This billionaire trading tycoon argues the public is looking at federal debt all wrong",
+      "link": "https://www.marketwatch.com/story/this-billionaire-trading-tycoon-argues-the-public-is-looking-at-federal-debt-all-wrong-7df0467d?mod=mw_rss_topstories",
+      "pubDate": "Tue, 23 Jun 2026 09:10:00 GMT",
+      "content": "The conventional wisdom is that federal government debt &#x2014; $39.1 trillion, or a mere $31.6 trillion when accounting for the liabilities owed to itself &#x2014; is astronomically high. Jeff Yass said that isn&#x2019;t the right comparison.",
+      "source": "MarketWatch",
+      "section": "市场动态"
+    },
+    {
+      "title": "Meg Ryan lists $15.3 million Hamptons retreat in &#x2018;coveted location&#x2019;",
+      "link": "https://www.marketwatch.com/story/meg-ryan-lists-15-3-million-hamptons-retreat-in-coveted-location-1cf8dcc3?mod=mw_rss_topstories",
+      "pubDate": "Tue, 23 Jun 2026 09:02:00 GMT",
+      "content": "Actress Meg Ryan is getting ready to bid farewell to one of the brightest jewels in her real estate portfolio: a stunning Hamptons retreat that she has owned for just two years.",
+      "source": "MarketWatch",
+      "section": "其他"
+    },
+    {
+      "title": "Dolly Parton&#x2019;s former hideaway in the quaint town of Solvang is listed for $2 million, complete with windmill",
+      "link": "https://www.marketwatch.com/story/dolly-partons-former-hideaway-in-the-quaint-town-of-solvang-is-listed-for-2-million-complete-with-windmill-093c877f?mod=mw_rss_topstories",
+      "pubDate": "Tue, 23 Jun 2026 08:59:00 GMT",
+      "content": "A quaint&#x2014;and very quirky&#x2014;California property that once served as music legend Dolly Parton&#x2019;s private hideaway has returned to the market for just a hair under $2 million.",
+      "source": "MarketWatch",
+      "section": "市场动态"
+    },
     {
       "title": "These 6 fast-growing stocks sit at the cutting edge of space and military technology",
       "link": "https://www.marketwatch.com/story/these-six-fast-growing-stocks-sit-at-the-cutting-edge-of-space-and-military-technology-0a349e1b?mod=mw_rss_topstories",
@@ -121,54 +183,6 @@
       "link": "https://www.marketwatch.com/story/a-40-market-crash-is-lurking-in-the-ipo-pipeline-spacex-and-openai-could-trigger-it-64ae4026?mod=mw_rss_topstories",
       "pubDate": "Mon, 22 Jun 2026 22:18:00 GMT",
       "content": "Prior records for U.S. equity issuance came in 1929 and 2000 &#x2014; and we all know what happened next.",
-      "source": "MarketWatch",
-      "section": "市场动态"
-    },
-    {
-      "title": "China&#x2019;s weird new economic spark: toy elves and robocops",
-      "link": "https://www.marketwatch.com/story/chinas-new-economic-drivers-a-sad-toy-elf-and-a-robot-police-force-8759daf9?mod=mw_rss_topstories",
-      "pubDate": "Mon, 22 Jun 2026 22:14:00 GMT",
-      "content": "Young Chinese aren&#x2019;t buying status symbols. They&#x2019;re spending money on things that make them feel something &#x2014; anything.",
-      "source": "MarketWatch",
-      "section": "其他"
-    },
-    {
-      "title": "Wall Street loves growth stocks &#x2014; but these 10 &#x2018;losers&#x2019; are primed to win",
-      "link": "https://www.marketwatch.com/story/wall-street-loves-growth-stocks-but-these-10-losers-are-primed-to-win-0202e491?mod=mw_rss_topstories",
-      "pubDate": "Mon, 22 Jun 2026 22:05:00 GMT",
-      "content": "Elon Musk&#x2019;s $1 trillion SpaceX prediction is probably wrong. Contrarian investors are buying these out-of-favor value plays instead.",
-      "source": "MarketWatch",
-      "section": "市场动态"
-    },
-    {
-      "title": "Caterpillar&#x2019;s stock hits a milestone as AI-fueled industrials rally sweeps up Wall Street",
-      "link": "https://www.marketwatch.com/story/caterpillars-stock-hits-a-milestone-as-roaring-industrials-rally-sweeps-up-wall-street-391057f7?mod=mw_rss_topstories",
-      "pubDate": "Mon, 22 Jun 2026 21:50:00 GMT",
-      "content": "Caterpillar is the hottest stock in the Dow this year, and now one of just two in the index with a share price above $1,000.",
-      "source": "MarketWatch",
-      "section": "市场动态"
-    },
-    {
-      "title": "Super Micro&#x2019;s stock is seeing its best run in a year thanks to Nvidia partnership",
-      "link": "https://www.marketwatch.com/story/super-micros-stock-is-seeing-its-best-run-in-a-year-thanks-to-nvidia-partnership-f619e58e?mod=mw_rss_topstories",
-      "pubDate": "Mon, 22 Jun 2026 20:58:00 GMT",
-      "content": "Super Micro shares were leading the S&amp;P 500&#x2019;s gainers on Monday.",
-      "source": "MarketWatch",
-      "section": "芯片半导体"
-    },
-    {
-      "title": "Micron&#x2019;s stock momentum builds as the company inks a new Anthropic partnership",
-      "link": "https://www.marketwatch.com/story/microns-stock-momentum-builds-as-the-company-inks-a-new-anthropic-partnership-484e3845?mod=mw_rss_topstories",
-      "pubDate": "Mon, 22 Jun 2026 20:53:00 GMT",
-      "content": "The companies announce a supply agreement for memory and storage.",
-      "source": "MarketWatch",
-      "section": "芯片半导体"
-    },
-    {
-      "title": "Salesforce&#x2019;s stock extends record losing streak. Can the company disrupt itself?",
-      "link": "https://www.marketwatch.com/story/salesforces-stock-extends-record-losing-streak-can-the-company-disrupt-itself-8402d62c?mod=mw_rss_topstories",
-      "pubDate": "Mon, 22 Jun 2026 20:50:00 GMT",
-      "content": "Shares of Salesforce posted their 14th consecutive day of losses as investors remain unconvinced of the company&#x2019;s AI momentum.",
       "source": "MarketWatch",
       "section": "市场动态"
     },
@@ -493,20 +507,44 @@
       "section": "其他"
     },
     {
-      "title": "SpaceX stock tanks 16%, extending slump following post-IPO rally",
-      "link": "https://www.cnbc.com/2026/06/22/spacex-stock-ipo-rally-selloff.html",
-      "pubDate": "Mon, 22 Jun 2026 20:10:16 GMT",
-      "content": "A rally following the company's record breaking IPO on June 12 has cooled, with stock dropping the past three days of trading.",
+      "title": "Tech rout intensifies as selloff grips global stocks",
+      "link": "https://www.cnbc.com/2026/06/23/tech-stocks-sell-off-mag7-samsung-sk-hynix.html",
+      "pubDate": "Tue, 23 Jun 2026 09:25:52 GMT",
+      "content": "Global stocks sold off on Tuesday, led by deep losses for tech stocks following a losing session for the sector on Wall Street.",
       "source": "CNBC",
       "section": "市场动态"
     },
     {
-      "title": "Alphabet has its worst day in over a year on AI concerns after high-profile exits",
-      "link": "https://www.cnbc.com/2026/06/22/alphabet-goog-stock-ai-departures.html",
-      "pubDate": "Mon, 22 Jun 2026 21:04:29 GMT",
-      "content": "Google parent Alphabet has seen consecutive high-profile artificial intelligence researchers leave.",
+      "title": "Oracle shed 21,000 roles over the past year amid wave of AI layoffs from tech giants",
+      "link": "https://www.cnbc.com/2026/06/23/oracle-ai-job-cuts-layoffs-21000.html",
+      "pubDate": "Tue, 23 Jun 2026 10:09:14 GMT",
+      "content": "\"The adoption and deployment of AI technologies across our operations have resulted, and may continue to result, in reductions to our workforce,\" Oracle said.",
       "source": "CNBC",
-      "section": "芯片半导体"
+      "section": "其他"
+    },
+    {
+      "title": "U.S. issues sweeping Iran oil sanctions waivers, unlocking billions in revenue for Tehran",
+      "link": "https://www.cnbc.com/2026/06/23/us-iran-oil-sanction-relief-strait-of-hormuz-peace-deal-.html",
+      "pubDate": "Tue, 23 Jun 2026 08:10:24 GMT",
+      "content": "The U.S. issued a sweeping rollback of sanctions on Iranian oil, offering Tehran an economic lifeline as negotiations toward a peace deal proceed.",
+      "source": "CNBC",
+      "section": "市场动态"
+    },
+    {
+      "title": "U.S. fights with Brazil for China&apos;s giant soybean market",
+      "link": "https://www.cnbc.com/2026/06/23/us-fights-with-brazil-for-chinas-giant-soybean-market.html",
+      "pubDate": "Tue, 23 Jun 2026 09:43:57 GMT",
+      "content": "The U.S. Soybean Export Council makes claims to higher quality a selling point over Brazil's crop, as American farmers attempt to win back business from the world's largest importer",
+      "source": "CNBC",
+      "section": "市场动态"
+    },
+    {
+      "title": "AI groups spend $20 million going head-to-head in New York race pitting Bores, Lasher, Schlossberg",
+      "link": "https://www.cnbc.com/2026/06/23/ai-groups-spend-20-million-in-new-york-race-pitting-bores-lasher-schlossberg.html",
+      "pubDate": "Tue, 23 Jun 2026 09:45:01 GMT",
+      "content": "Companies are spending big to shape AI policies at the federal level. And the Manhattan House Democratic primary will be a test of where voters stand.",
+      "source": "CNBC",
+      "section": "市场动态"
     },
     {
       "title": "&apos;I like their money&apos;: Trump threatens lawsuits against ABC for reporting on Reflecting Pool",
@@ -517,74 +555,18 @@
       "section": "市场动态"
     },
     {
-      "title": "Brexit 10 years later: How the UK economy and politics changed, in charts",
-      "link": "https://www.cnbc.com/2026/06/23/brexit-10-years-uk-economy-politics-charts.html",
-      "pubDate": "Tue, 23 Jun 2026 06:10:23 GMT",
-      "content": "Ten years after the Brexit vote, CNBC compiled these charts show how the U.K. has changed across growth, immigration, sterling, trade and politics.",
-      "source": "CNBC",
-      "section": "全球财经"
-    },
-    {
-      "title": "How a $4 billion Indian startup won Meta&apos;s backing but lost its founder to WhatsApp",
-      "link": "https://www.cnbc.com/2026/06/23/4-billion-startup-cred-meta-whatsapp.html",
-      "pubDate": "Tue, 23 Jun 2026 03:45:47 GMT",
-      "content": "Indian fintech startup Cred will raise $900 million in a round led by Meta, but has lost its founder and CEO to WhatsApp.",
+      "title": "Apollo curbs withdrawals after exit requests hit 17%, reigniting fears over private credit liquidity",
+      "link": "https://www.cnbc.com/2026/06/23/apollo-private-credit-fund-withdrawals-redemptions.html",
+      "pubDate": "Tue, 23 Jun 2026 09:09:13 GMT",
+      "content": "Apollo is capping investor redemptions in its main retail-focused private credit fund after exit requests hit 17%.",
       "source": "CNBC",
       "section": "其他"
-    },
-    {
-      "title": "Global M&amp;A deal value on track to reach $4 trillion this year: PwC",
-      "link": "https://www.cnbc.com/2026/06/23/global-ma-deal-value-on-track-to-reach-4-trillion-this-year-pwc-.html",
-      "pubDate": "Tue, 23 Jun 2026 04:49:12 GMT",
-      "content": "Global deal value of M&A is on track to reach $4 trillion in 2026, making it the strongest year since 2021",
-      "source": "CNBC",
-      "section": "全球财经"
-    },
-    {
-      "title": "&apos;We&apos;ll see&apos; — Trump hedges on guarantee Iran won&apos;t use oil profits to rebuild military",
-      "link": "https://www.cnbc.com/2026/06/22/trump-iran-war-oil-profits-rebuild-military.html",
-      "pubDate": "Mon, 22 Jun 2026 23:09:43 GMT",
-      "content": "Treasury Secretary Scott Bessent authorized the import of Iranian oil and refined products into the U.S. through at least August.",
-      "source": "CNBC",
-      "section": "市场动态"
-    },
-    {
-      "title": "Companies are demanding states cut red tape. Data center-wary voters may think differently",
-      "link": "https://www.cnbc.com/2026/06/22/states-data-center-permitting-public-opposition.html",
-      "pubDate": "Mon, 22 Jun 2026 18:16:44 GMT",
-      "content": "Pennsylvania Gov. Josh Shapiro touted a $20 billion economic development deal last June, the state's largest ever. It's caused Shapiro no shortage of grief.",
-      "source": "CNBC",
-      "section": "其他"
-    },
-    {
-      "title": "CNBC&apos;s The China Connection newsletter: Tackling EV trucks after success with cars",
-      "link": "https://www.cnbc.com/2026/06/22/cnbcs-the-china-connection-newsletter-tackling-the-ev-truck-market.html",
-      "pubDate": "Mon, 22 Jun 2026 23:00:01 GMT",
-      "content": "Beijing's latest push into electric trucks has echoes of measures announced more than a decade ago to develop new energy passenger cars.",
-      "source": "CNBC",
-      "section": "其他"
-    },
-    {
-      "title": "China&apos;s 618 shopping festival growth slows sharply as consumer spending malaise persists",
-      "link": "https://www.cnbc.com/2026/06/23/china-618-shopping-festival-sales-growth-consumer-spending-slowdown-syntun.html",
-      "pubDate": "Tue, 23 Jun 2026 03:19:02 GMT",
-      "content": "The latest consumer data reinforce how consumption in China remains subdued.",
-      "source": "CNBC",
-      "section": "全球财经"
     },
     {
       "title": "Tesla faces federal probe after Model 3 slams into Texas home, killing 76-year-old",
       "link": "https://www.cnbc.com/2026/06/22/tesla-nhtsa-model-3-crash-autopilot-katy-texas.html",
       "pubDate": "Tue, 23 Jun 2026 00:44:14 GMT",
       "content": "Harris County authorities said that the driver, Michael Butler, said that he had been using Tesla's partially automated driving systems.",
-      "source": "CNBC",
-      "section": "市场动态"
-    },
-    {
-      "title": "Oil prices fall as investors continue to watch U.S.-Iran moves, Citi sees &apos;overhang&apos; disappearing",
-      "link": "https://www.cnbc.com/2026/06/23/oil-prices-rise-as-investors-mull-middle-east-developments-.html",
-      "pubDate": "Tue, 23 Jun 2026 06:40:52 GMT",
-      "content": "Oil falls Tuesday as investors continue to assess the latest developments in the Middle East, while showing optimism the conflict may end soon.",
       "source": "CNBC",
       "section": "市场动态"
     },
@@ -597,12 +579,76 @@
       "section": "其他"
     },
     {
-      "title": "CNBC Elite Advisors: Top ultra-high net worth wealth management firms for 2026",
-      "link": "https://www.cnbc.com/2026/06/22/uhnw-wealth-management-list-cnbc-elite-advisors.html",
-      "pubDate": "Mon, 22 Jun 2026 14:03:38 GMT",
-      "content": "CNBC Elite Advisors recognizes wealth management firms serving high net worth and UHNW clients.",
+      "title": "Brexit 10 years later: How the UK economy and politics changed, in charts",
+      "link": "https://www.cnbc.com/2026/06/23/brexit-10-years-uk-economy-politics-charts.html",
+      "pubDate": "Tue, 23 Jun 2026 06:10:23 GMT",
+      "content": "Ten years after the Brexit vote, CNBC compiled these charts show how the U.K. has changed across growth, immigration, sterling, trade and politics.",
+      "source": "CNBC",
+      "section": "全球财经"
+    },
+    {
+      "title": "How Europe is grappling with extreme heat as red alerts issued in Britain, France, Spain and Italy",
+      "link": "https://www.cnbc.com/2026/06/23/extreme-heat-wave-europe-weather-climate.html",
+      "pubDate": "Tue, 23 Jun 2026 09:28:57 GMT",
+      "content": "Several European countries issued red weather alerts as a fresh bout of extreme heat pushed temperatures beyond 40 degrees Celsius (104 degrees Fahrenheit).",
+      "source": "CNBC",
+      "section": "全球财经"
+    },
+    {
+      "title": "Companies are demanding states cut red tape. Data center-wary voters may think differently",
+      "link": "https://www.cnbc.com/2026/06/22/states-data-center-permitting-public-opposition.html",
+      "pubDate": "Mon, 22 Jun 2026 18:16:44 GMT",
+      "content": "Pennsylvania Gov. Josh Shapiro touted a $20 billion economic development deal last June, the state's largest ever. It's caused Shapiro no shortage of grief.",
       "source": "CNBC",
       "section": "其他"
+    },
+    {
+      "title": "&apos;We&apos;ll see&apos; — Trump hedges on guarantee Iran won&apos;t use oil profits to rebuild military",
+      "link": "https://www.cnbc.com/2026/06/22/trump-iran-war-oil-profits-rebuild-military.html",
+      "pubDate": "Mon, 22 Jun 2026 23:09:43 GMT",
+      "content": "Treasury Secretary Scott Bessent authorized the import of Iranian oil and refined products into the U.S. through at least August.",
+      "source": "CNBC",
+      "section": "市场动态"
+    },
+    {
+      "title": "How a $4 billion Indian startup won Meta&apos;s backing but lost its founder to WhatsApp",
+      "link": "https://www.cnbc.com/2026/06/23/4-billion-startup-cred-meta-whatsapp.html",
+      "pubDate": "Tue, 23 Jun 2026 09:06:25 GMT",
+      "content": "Indian fintech startup Cred will raise $900 million in a round led by Meta, but has lost its founder and CEO to WhatsApp.",
+      "source": "CNBC",
+      "section": "其他"
+    },
+    {
+      "title": "Lucid to lay off roughly 18% of U.S. workforce, COO Marc Winterhoff leaves",
+      "link": "https://www.cnbc.com/2026/06/22/lucid-layoffs-evs.html",
+      "pubDate": "Mon, 22 Jun 2026 15:37:11 GMT",
+      "content": "Lucid Group is cutting its U.S. workforce by 18% as part of a cost-savings plan. It also said COO Marc Winterhoff is departing effective immediately.",
+      "source": "CNBC",
+      "section": "其他"
+    },
+    {
+      "title": "Senate advances housing bill to limit private equity purchases of single-family homes",
+      "link": "https://www.cnbc.com/2026/06/22/affordable-housing-bill-private-equity-single-family-homes.html",
+      "pubDate": "Mon, 22 Jun 2026 22:38:59 GMT",
+      "content": "The House is also expected to advance a sprawling housing package this week that's aimed at creating more supply and making homes more affordable.",
+      "source": "CNBC",
+      "section": "其他"
+    },
+    {
+      "title": "&apos;Reward for failure&apos;: Investor support for Target Chair Brian Cornell falls to lowest level ever",
+      "link": "https://www.cnbc.com/2026/06/22/target-brian-cornell-shareholder-support.html",
+      "pubDate": "Mon, 22 Jun 2026 17:55:37 GMT",
+      "content": "Target Chair Brian Cornell built the retailer into a $100 billion-plus giant, but recent struggles and underperformance have fueled investor calls for change.",
+      "source": "CNBC",
+      "section": "其他"
+    },
+    {
+      "title": "Oil prices fall as investors continue to watch U.S.-Iran moves, Citi sees &apos;overhang&apos; disappearing",
+      "link": "https://www.cnbc.com/2026/06/23/oil-prices-rise-as-investors-mull-middle-east-developments-.html",
+      "pubDate": "Tue, 23 Jun 2026 06:40:52 GMT",
+      "content": "Oil falls Tuesday as investors continue to assess the latest developments in the Middle East, while showing optimism the conflict may end soon.",
+      "source": "CNBC",
+      "section": "市场动态"
     },
     {
       "title": "Amazon Prime Day arrives earlier this year. Here&apos;s why Wall Street is watching closely",
@@ -613,6 +659,30 @@
       "section": "市场动态"
     },
     {
+      "title": "SpaceX signs computing power deal with open-source AI startup Reflection worth up to $6.3 billion",
+      "link": "https://www.cnbc.com/2026/06/22/spacex-ai-colossus-data-center-reflection.html",
+      "pubDate": "Mon, 22 Jun 2026 15:00:01 GMT",
+      "content": "SpaceX has turned its Colossus data center into a commercial computing power platform, landing recent deals with Anthropic, Google and Cursor.",
+      "source": "CNBC",
+      "section": "全球财经"
+    },
+    {
+      "title": "China&apos;s 618 shopping festival growth slows sharply as consumer spending malaise persists",
+      "link": "https://www.cnbc.com/2026/06/23/china-618-shopping-festival-sales-growth-consumer-spending-slowdown-syntun.html",
+      "pubDate": "Tue, 23 Jun 2026 03:19:02 GMT",
+      "content": "The latest consumer data reinforce how consumption in China remains subdued.",
+      "source": "CNBC",
+      "section": "全球财经"
+    },
+    {
+      "title": "Singtel sells $773 million Thai energy stake as it ramps up AI and data center investments",
+      "link": "https://www.cnbc.com/2026/06/23/singtel-sells-gulf-development-stake-asset-recycling-ai-investment.html",
+      "pubDate": "Tue, 23 Jun 2026 05:54:47 GMT",
+      "content": "Southeast Asia's largest telecom operator sold 2.8% stake for about S$1 billion in Gulf Development.",
+      "source": "CNBC",
+      "section": "其他"
+    },
+    {
       "title": "Beijing is summoning executives again, but here&apos;s why that&apos;s causing less worry than in 2021",
       "link": "https://www.cnbc.com/2026/06/23/china-tech-crackdown-antitrust-tripcom-meituan-food-delivery-anti-involution-deflation-.html",
       "pubDate": "Mon, 22 Jun 2026 23:28:15 GMT",
@@ -621,10 +691,26 @@
       "section": "其他"
     },
     {
-      "title": "Senate advances housing bill to limit private equity purchases of single-family homes",
-      "link": "https://www.cnbc.com/2026/06/22/affordable-housing-bill-private-equity-single-family-homes.html",
-      "pubDate": "Mon, 22 Jun 2026 22:38:59 GMT",
-      "content": "The House is also expected to advance a sprawling housing package this week that's aimed at creating more supply and making homes more affordable.",
+      "title": "Global M&amp;A deal value on track to reach $4 trillion this year: PwC",
+      "link": "https://www.cnbc.com/2026/06/23/global-ma-deal-value-on-track-to-reach-4-trillion-this-year-pwc-.html",
+      "pubDate": "Tue, 23 Jun 2026 04:49:12 GMT",
+      "content": "Global deal value of M&A is on track to reach $4 trillion in 2026, making it the strongest year since 2021",
+      "source": "CNBC",
+      "section": "全球财经"
+    },
+    {
+      "title": "Alphabet has its worst day in over a year on AI concerns after high-profile exits",
+      "link": "https://www.cnbc.com/2026/06/22/alphabet-goog-stock-ai-departures.html",
+      "pubDate": "Mon, 22 Jun 2026 21:04:29 GMT",
+      "content": "Google parent Alphabet has seen consecutive high-profile artificial intelligence researchers leave.",
+      "source": "CNBC",
+      "section": "芯片半导体"
+    },
+    {
+      "title": "CNBC Elite Advisors: Top ultra-high net worth wealth management firms for 2026",
+      "link": "https://www.cnbc.com/2026/06/22/uhnw-wealth-management-list-cnbc-elite-advisors.html",
+      "pubDate": "Mon, 22 Jun 2026 14:03:38 GMT",
+      "content": "CNBC Elite Advisors recognizes wealth management firms serving high net worth and UHNW clients.",
       "source": "CNBC",
       "section": "其他"
     },
@@ -659,78 +745,6 @@
       "content": "Alan Greenspan presided over the Federal Reserve for 19 years under four presidents and mastered the art of obfuscation known as Fedspeak.",
       "source": "CNBC",
       "section": "市场动态"
-    },
-    {
-      "title": "Meta&apos;s WhatsApp head to step down, will be replaced by Indian fintech founder Kunal Shah",
-      "link": "https://www.cnbc.com/2026/06/22/meta-kunal-shah-whatsapp-will-cathcart.html",
-      "pubDate": "Mon, 22 Jun 2026 17:11:18 GMT",
-      "content": "Will Cathcart will step down as the head of WhatsApp and move into another role at the company. Kunal Shah will take over.",
-      "source": "CNBC",
-      "section": "市场动态"
-    },
-    {
-      "title": "Vance hails &apos;great progress&apos; in U.S.-Iran talks despite &apos;threatening&apos; and &apos;whining&apos;",
-      "link": "https://www.cnbc.com/2026/06/22/vance-iran-ceasefire-talks-iaea-inspectors.html",
-      "pubDate": "Mon, 22 Jun 2026 15:17:42 GMT",
-      "content": "JD Vance said U.S.-Iran talks in Switzerland made progress, with Tehran agreeing to allow IAEA inspectors back into Iran.",
-      "source": "CNBC",
-      "section": "地缘政治"
-    },
-    {
-      "title": "SpaceX kicks off bond sale days after record IPO, discloses over $100 billion cash pile",
-      "link": "https://www.cnbc.com/2026/06/22/spacex-spcx-bond-sale-ipo.html",
-      "pubDate": "Mon, 22 Jun 2026 20:33:12 GMT",
-      "content": "SpaceX on Monday unveiled a senior unsecured notes offering and said it held about $100.8 billion in cash.",
-      "source": "CNBC",
-      "section": "全球财经"
-    },
-    {
-      "title": "Can anyone join Musk in the trillionaire club? Zuckerberg has best shot, according to prediction markets",
-      "link": "https://www.cnbc.com/2026/06/22/zuckerberg-seen-as-next-to-join-trillionaire-club-say-kalshi-traders.html",
-      "pubDate": "Mon, 22 Jun 2026 16:45:37 GMT",
-      "content": "The Meta CEO is seen as next to join the Tesla and SpaceX CEO. Nvidia CEO Jensen Huang is seen as the second-most-likely.",
-      "source": "CNBC",
-      "section": "芯片半导体"
-    },
-    {
-      "title": "Who is Andy Burnham? And 4 other things investors should know as the UK replaces its prime minister",
-      "link": "https://www.cnbc.com/2026/06/22/keir-starmer-andy-burnham-uk-markets.html",
-      "pubDate": "Tue, 23 Jun 2026 06:12:10 GMT",
-      "content": "Keir Starmer’s exit puts Andy Burnham, gilts, sterling and the next UK chancellor in focus for investors.",
-      "source": "CNBC",
-      "section": "其他"
-    },
-    {
-      "title": "Childcare tax breaks can save families and businesses money — but few use them, congressional report finds",
-      "link": "https://www.cnbc.com/2026/06/22/child-care-tax-breaks.html",
-      "pubDate": "Mon, 22 Jun 2026 19:25:37 GMT",
-      "content": "Childcare can be expensive for both parents and their employers. Yet existing tax incentives to help defray those costs may go unused, a new report finds.",
-      "source": "CNBC",
-      "section": "其他"
-    },
-    {
-      "title": "&apos;Reward for failure&apos;: Investor support for Target Chair Brian Cornell falls to lowest level ever",
-      "link": "https://www.cnbc.com/2026/06/22/target-brian-cornell-shareholder-support.html",
-      "pubDate": "Mon, 22 Jun 2026 17:55:37 GMT",
-      "content": "Target Chair Brian Cornell built the retailer into a $100 billion-plus giant, but recent struggles and underperformance have fueled investor calls for change.",
-      "source": "CNBC",
-      "section": "其他"
-    },
-    {
-      "title": "Lucid to lay off roughly 18% of U.S. workforce, COO Marc Winterhoff leaves",
-      "link": "https://www.cnbc.com/2026/06/22/lucid-layoffs-evs.html",
-      "pubDate": "Mon, 22 Jun 2026 15:37:11 GMT",
-      "content": "Lucid Group is cutting its U.S. workforce by 18% as part of a cost-savings plan. It also said COO Marc Winterhoff is departing effective immediately.",
-      "source": "CNBC",
-      "section": "其他"
-    },
-    {
-      "title": "Shipping stalls in Strait of Hormuz after Iran declares key waterway closed again",
-      "link": "https://www.cnbc.com/2026/06/22/strait-of-hormuz-iran-us-shipping-oil.html",
-      "pubDate": "Mon, 22 Jun 2026 13:34:28 GMT",
-      "content": "The update comes even as industry trackers showed Iranian tankers have continued to sail through the strait.",
-      "source": "CNBC",
-      "section": "地缘政治"
     }
   ]
 }
