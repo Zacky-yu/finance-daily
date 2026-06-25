@@ -1,5 +1,8 @@
 {
-  "name": "xiaolong-finance-daily",
+  "name": "gzh-cover",
   "version": "1.0.0",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "sharp": "^0.33.0"
+  }
 }
