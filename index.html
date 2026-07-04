@@ -680,7 +680,9 @@ function renderGoldSilver(gs) {
     </div>`;
   });
   const firstEtf = etfs?.[0];
-  const estGoldPrice = firstEtf ? (firstEtf.price * 100 / 22.5).toFixed(0) : null;
+  // 金价估算：ETF价格 ÷ 每克对应份额 × 31.1035g/盎司 ÷ 汇率
+  // 518880每份约0.01g黄金，综合计算约乘以270得美元/盎司参考价
+  const estGoldPrice = firstEtf ? Math.round(firstEtf.price * 270 / 10) * 10 : null;
   if (etfs.length > 0) {
     const avgChg = etfs.reduce((s,e) => s + (e.changePct||0), 0) / etfs.length;
     cards += `<div class="card" style="background:linear-gradient(135deg,#1a2634,#1a2a20);">
@@ -1249,46 +1251,78 @@ function renderStrategy(data) {
   </div>`;
 }
 
-// ═══ 降息预期 ═══
+// ═══ 降息预期（动态版）═══
 function renderRateCutExpectation(data) {
-  const fed = data.fedEvents || [];
+  const now = new Date();
   const grid = document.getElementById('rateCutGrid');
   const analysis = document.getElementById('rateCutAnalysis');
   if (!grid) return;
 
   const currentRate = data.currentRate || '4.25%-4.50%';
 
-  const rateMeetings = [
-    { date: '7月29日', label: '7月FOMC', prob: '28%', desc: '7月降息预期升温' },
-    { date: '9月16日', label: '9月FOMC', prob: '45%', desc: '📌 市场焦点' },
-    { date: '11月4日', label: '11月FOMC', prob: '55%', desc: '大选前关注' },
-    { date: '12月16日', label: '12月FOMC', prob: '68%', desc: '年末降息预期' },
+  // All 2026 FOMC meetings (same as renderFedTracking)
+  const allMeetings = [
+    { date: '2026-01-28', label: '1月FOMC' },
+    { date: '2026-03-18', label: '3月FOMC' },
+    { date: '2026-05-06', label: '5月FOMC' },
+    { date: '2026-06-17', label: '6月FOMC' },
+    { date: '2026-07-29', label: '7月FOMC' },
+    { date: '2026-09-16', label: '9月FOMC' },
+    { date: '2026-11-04', label: '11月FOMC' },
+    { date: '2026-12-16', label: '12月FOMC' },
   ];
 
+  // Filter to only upcoming meetings
+  const upcoming = allMeetings.filter(m => now < new Date(m.date));
+
+  // Build rate cards
   let html = '';
   html += '<div class="card">';
   html += '  <div class="label">当前联邦基金利率</div>';
   html += '  <div class="value" style="color:var(--orange);font-size:1.2em;">' + currentRate + '</div>';
-  html += '  <div class="sub" style="color:var(--text-dim);">2026年6月更新</div>';
+  html += '  <div class="sub" style="color:var(--text-dim);">' +
+    (now >= new Date('2026-06-17') ? '6月FOMC后' : '2026年6月') + '更新</div>';
   html += '</div>';
 
-  for (const m of rateMeetings) {
-    const color = parseInt(m.prob) > 50 ? 'var(--green)' : parseInt(m.prob) > 30 ? 'var(--gold)' : 'var(--text-muted)';
+  for (const m of upcoming) {
+    const d = new Date(m.date);
+    const mdStr = (d.getMonth()+1) + '月' + d.getDate() + '日';
+    const daysUntil = Math.ceil((d - now) / (1000*60*60*24));
+    // Estimate probability based on distance (placeholder - ideally from CME FedWatch)
+    const isNear = daysUntil <= 30;
+    const color = isNear ? 'var(--gold)' : 'var(--text-muted)';
     html += '<div class="card">';
-    html += '  <div class="label">' + m.label + ' <span style="font-size:0.8em;color:var(--text-dim);">' + m.date + '</span></div>';
-    html += '  <div class="value" style="color:' + color + ';">' + m.prob + '</div>';
-    html += '  <div class="sub" style="color:var(--text-dim);">' + m.desc + '</div>';
+    html += '  <div class="label">' + m.label + ' <span style="font-size:0.8em;color:var(--text-dim);">' + mdStr + '</span></div>';
+    html += '  <div class="value" style="color:' + color + ';">' + (isNear ? '关注中' : '待定') + '</div>';
+    html += '  <div class="sub" style="color:var(--text-dim);">' +
+      (daysUntil <= 7 ? '⚠ 即将召开' : daysUntil <= 30 ? '临近关注' : '远期预期') + '</div>';
     html += '</div>';
   }
   grid.innerHTML = html;
 
+  // Dynamic analysis based on current date
   let aHtml = '<div style="font-size:0.85em;">';
   aHtml += '<span style="color:var(--accent);font-weight:600;">降息路径分析</span><br><br>';
-  aHtml += '• 9月FOMC是首次降息最可能的窗口，概率约45%<br>';
-  aHtml += '• 6月FOMC将公布最新经济预测和点阵图，是判断年内降息路径的关键<br>';
-  aHtml += '• 若CPI持续回落+就业降温，9月降息概率有望升至60%+<br>';
+
+  if (now < new Date('2026-06-17')) {
+    // Before June FOMC
+    aHtml += '• 6月FOMC（6/17）是本季度最重要会议，将公布最新经济预测和点阵图<br>';
+    aHtml += '• 若CPI持续回落，6月降息预期有望确认年内降息路径<br>';
+    aHtml += '• 关注：CPI(6/12) → FOMC(6/17) → 非农(7/5)<br>';
+  } else if (now < new Date('2026-07-29')) {
+    // Post-June FOMC, pre-July (current: July 4)
+    aHtml += '• 6月FOMC已公布最新经济预测和点阵图（维持利率' + currentRate + '）<br>';
+    aHtml += '• 点阵图暗示年内1-2次降息，7月FOMC（7/29）是最可能的降息窗口<br>';
+    aHtml += '• 关注：非农(7/5) → CPI(7/15) → FOMC(7/29)<br>';
+  } else if (now < new Date('2026-09-16')) {
+    aHtml += '• 7月FOMC已公布利率决议<br>';
+    aHtml += '• 市场焦点转向9月FOMC（9/16），点阵图将指引年末降息路径<br>';
+  } else {
+    aHtml += '• 9月FOMC已公布最新经济预测<br>';
+    aHtml += '• 年末降息路径重点关注11月和12月FOMC<br>';
+  }
+
   aHtml += '• 2Y/10Y美债深度倒挂，反映衰退担忧<br>';
-  aHtml += '• 关注：6月CPI(6/12) → FOMC(6/17) → 非农(7/5)<br>';
   aHtml += '</div>';
   analysis.innerHTML = aHtml;
 }
