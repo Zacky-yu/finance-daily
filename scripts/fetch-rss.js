@@ -2,7 +2,7 @@ const fs = require('fs');
 const https = require('https');
 
 const RSS_URL = 'https://feeds.content.dowjones.io/public/rss/mw_topstories';
-const OUTPUT = 'news-cache.json';
+const OUTPUT = 'public/news-cache.json';
 
 https.get(RSS_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } }, res => {
   let xml = '';
