@@ -1,12 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🦁 小龙财经日报 · 市场情绪版</title>
+<title>🐉 小龙财经日报 · 市场情绪版</title>
 <style>
 /* ═══════════════════════════════════════════════
-   🦁 小龙财经日报 — Design System
+   🐉 小龙财经日报 — Design System
    Base: ui-design-system · Premium Finance Dark
    ═══════════════════════════════════════════════ */
 
@@ -385,7 +385,7 @@ header .refresh-btn:disabled { opacity: 0.5; cursor: wait; }
 .recommend .r-reason { font-size: 0.78em; color: var(--text-secondary); margin-top: var(--space-1); line-height: 1.6; }
 
 /* ═════════════════════════════════════════════
-   🎯 SECTION: 今日操作建议 — Trading Signal Cards
+   ✨ SECTION: 今日操作建议 — Trading Signal Cards
    ═══════════════════════════════════════════════ */
 
 .trade-signal-grid {
@@ -526,7 +526,7 @@ header .refresh-btn:disabled { opacity: 0.5; cursor: wait; }
 .trade-card.sector-silver::before { background: var(--teal); }
 
 /* ═══════════════════════════════════════════════
-   🎯 SECTION: 美联储预期 — FOMC Board
+   🏦 SECTION: 美联储预期 — FOMC Board
    ═══════════════════════════════════════════════ */
 
 .fed-header-card {
@@ -684,7 +684,7 @@ header .refresh-btn:disabled { opacity: 0.5; cursor: wait; }
 }
 
 /* ═══════════════════════════════════════════════
-   🎯 SECTION: 半导体存储芯片 — Premium ETF & Stock
+   💾 SECTION: 半导体存储芯片 — Premium ETF & Stock
    ═══════════════════════════════════════════════ */
 
 .semi-etf-card {
@@ -799,7 +799,7 @@ header .refresh-btn:disabled { opacity: 0.5; cursor: wait; }
 .semi-stock-row .ss-tag.tag-interface { background: var(--pink-bg); color: var(--pink); }
 
 /* ═══════════════════════════════════════════════
-   🎯 SECTION: 黄金白银 — Precious Metals Dashboard
+   🏆 SECTION: 黄金白银 — Precious Metals Dashboard
    ═══════════════════════════════════════════════ */
 
 .pm-grid {
@@ -950,10 +950,10 @@ header .refresh-btn:disabled { opacity: 0.5; cursor: wait; }
 <body>
 <div class="container">
   <header>
-    <h1>🦁 小龙财经日报 · 市场情绪版</h1>
-    <div class="subtitle">实时A股指数 · 行业ETF · 全球资讯 · 市场情绪监控</div>
+    <h1>🐉 小龙财经日报 · 市场情绪版</h1>
+    <div class="subtitle">实时A股指数 · 行业ETF · 国际贵金属 · 全球资讯 · 板块策略</div>
     <div class="status-bar">
-      <span class="update-time" id="updateTime">⏱ 加载中...</span>
+      <span class="update-time" id="updateTime">🕐 加载中...</span>
       <button class="refresh-btn" id="refreshBtn" onclick="refreshNow()">🔄 刷新数据</button>
     </div>
   </header>
@@ -962,44 +962,44 @@ header .refresh-btn:disabled { opacity: 0.5; cursor: wait; }
 
   <div id="content" style="display:none;">
 
-    <!-- 📰 市场情绪监控 -->
+    <!-- 🧠 市场情绪监控 -->
     <div class="section">
-      <div class="section-title">📊 市场情绪监控</div>
+      <div class="section-title">🧠 市场情绪监控</div>
       <div id="sentimentPanel"></div>
       <div class="analysis-box" id="newsAnalysis" style="border-left-color:var(--accent);"></div>
     </div>
 
-    <!-- 📸 A股大盘 -->
+    <!-- 📈 A股大盘 -->
     <div class="section">
-      <div class="section-title">📸 A股大盘</div>
+      <div class="section-title">📈 A股大盘</div>
       <div class="grid-4" id="indexGrid"></div>
     </div>
 
-    <!-- 🏛 美联储预期 -->
+    <!-- 🏦 美联储预期 -->
     <div class="section">
-      <div class="section-title" style="color:var(--orange);">🏛 美联储预期</div>
+      <div class="section-title" style="color:var(--orange);">🏦 美联储预期</div>
       <div id="rateCutGrid"></div>
       <div id="fedTracking"></div>
     </div>
 
-    <!-- 🔬 半导体 & 存储芯片 -->
+    <!-- 💾 半导体 & 存储芯片 -->
     <div class="section">
-      <div class="section-title" style="color:var(--accent-light);">🔬 半导体 &amp; 存储芯片</div>
-      <div class="sub-section-title">📈 ETF</div>
+      <div class="section-title" style="color:var(--accent-light);">💾 半导体 &amp; 存储芯片</div>
+      <div class="sub-section-title">📊 ETF</div>
       <div class="grid-4" id="etfGrid"></div>
-      <div class="sub-section-title">📮 个股</div>
+      <div class="sub-section-title">📋 个股</div>
       <div id="stockList"></div>
     </div>
 
-    <!-- 🏆 黄金白银 -->
+    <!-- 🏆 黄金白银（国际现货 + 国内ETF） -->
     <div class="section">
-      <div class="section-title" style="color:var(--gold-light);">🏆 黄金白银</div>
+      <div class="section-title" style="color:var(--gold-light);">🏆 黄金白银 · 国际现货 &amp; 国内ETF</div>
       <div class="grid-4" id="goldGrid"></div>
     </div>
 
-    <!-- 📪 实时资讯 -->
+    <!-- 📰 实时资讯 -->
     <div class="section">
-      <div class="section-title">📪 实时资讯</div>
+      <div class="section-title">📰 实时资讯</div>
       <div id="newsList"></div>
     </div>
 
@@ -1015,22 +1015,16 @@ header .refresh-btn:disabled { opacity: 0.5; cursor: wait; }
       <div id="tomorrowFocus"></div>
     </div>
 
-    <!-- 💼 今日操作建议 -->
+    <!-- ✨ 板块策略 -->
     <div class="section">
-      <div class="section-title" style="color:var(--gold-light);">💼 今日操作建议</div>
+      <div class="section-title" style="color:var(--gold-light);">✨ 板块策略建议</div>
       <div id="recommendList"></div>
-    </div>
-
-    <!-- 🏛️ 美联储跟踪 -->
-    <div class="section" style="display:none;" id="fedSection">
-      <div class="section-title" style="color:var(--orange);">🏛️ 美联储跟踪</div>
-      <div id="fedTrackingDup"></div>
     </div>
 
   </div>
 
   <div class="footer">
-    数据来源：腾讯财经 · GitHub Actions 自动更新 · <a href="https://github.com" target="_blank">小龙财经日报</a>
+    数据来源：腾讯财经 · GitHub Actions 自动更新 · 小龙财经日报 🐉
   </div>
 </div>
 <script src="./fetch.js"></script>
