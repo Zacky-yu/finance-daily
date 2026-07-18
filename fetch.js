@@ -1,4 +1,4 @@
-// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?// 灏忛緳璐㈢粡鏃ユ姤 路 fetch.js 鈥?甯傚満鎯呯华 + 閲忚兘鍒嗘瀽 + 澶氭簮鏂伴椈
+﻿// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?// 灏忛緳璐㈢粡鏃ユ姤 路 fetch.js 鈥?甯傚満鎯呯华 + 閲忚兘鍒嗘瀽 + 澶氭簮鏂伴椈
 // 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
 // 鈹€鈹€鈹€ State 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 let lastData = null;
@@ -136,14 +136,14 @@ function renderSentiment(data) {
   // Volume analysis
   const shIdx = indices.find(i => i.code === '000001');
   const volumeInfo = shIdx && shIdx.volume > 0
-    ? '\uD83D\uDCCA ' + (shIdx.turnover > 1e11 ? (shIdx.turnover / 1e11).toFixed(2) + '鍗冧嚎' : (shIdx.turnover / 1e8).toFixed(0) + '浜?) + ' 鎴愪氦'
+    ? '\uD83D\uDCCA ' + (shIdx.turnover > 1e11 ? (shIdx.turnover / 1e11).toFixed(2) + '\u5343\u4ebf' : (shIdx.turnover / 1e8).toFixed(0) + '\u4ebf') + ' \u6210\u4ea4'
     : '';
 
   // Sentiment classification
   let sentLabel, sentColor;
   if (avgPct > 1.0)   { sentLabel = '\uD83D\uDD25 寮虹儓鐪嬪'; sentColor = '#ef4444'; }
   else if (avgPct > 0.3) { sentLabel = '\uD83D\uDCC8 鍋忓'; sentColor = '#f97316'; }
-  else if (avgPct > -0.3){ sentLabel = '\u2696\uFE0F 涓€?; sentColor = '#ffc107'; }
+  else if (avgPct > -0.3){ sentLabel = '\u2696\uFE0F 涓性'; sentColor = '#ffc107'; }
   else if (avgPct > -1.0){ sentLabel = '\uD83D\uDCC9 鍋忕┖'; sentColor = '#22c55e'; }
   else                     { sentLabel = '\uD83E\uDDCA 寮虹儓鐪嬬┖'; sentColor = '#22c55e'; }
 
