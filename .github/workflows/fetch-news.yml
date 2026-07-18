@@ -24,7 +24,7 @@ jobs:
           # 4. Fed Press Releases
           curl -s -o /tmp/fed.xml "https://www.federalreserve.gov/feeds/press_all.xml" || true
 
-      - name: 🔄 合并 RSS 为 JSON
+      - name: 🔄 合并 RSS �?JSON
         run: |
           node -e "
           const fs = require('fs');
@@ -32,7 +32,7 @@ jobs:
             marketwatch: { file: '/tmp/mw.xml', tag: 'US', category: '美股' },
             cnbc:        { file: '/tmp/cnbc.xml', tag: 'US', category: '全球市场' },
             yahoo:       { file: '/tmp/yahoo.xml', tag: 'US', category: '全球市场' },
-            fed:         { file: '/tmp/fed.xml', tag: 'FED', category: '美联储' },
+            fed:         { file: '/tmp/fed.xml', tag: 'FED', category: '美联�? },
           };
 
           function parseRSS(xml) {
@@ -63,9 +63,9 @@ jobs:
               const items = parseRSS(xml);
               items.forEach(item => { item.source = src.tag; item.category = src.category; });
               allNews.push(...items);
-              console.log('  ✓ ' + key + ': ' + items.length + ' items');
+              console.log('  �?' + key + ': ' + items.length + ' items');
             } catch(e) {
-              console.log('  ✗ ' + key + ': ' + e.message);
+              console.log('  �?' + key + ': ' + e.message);
             }
           }
 
@@ -84,14 +84,14 @@ jobs:
             sources: Object.keys(sources).join(',')
           };
 
-          fs.writeFileSync('public/news-cache.json', JSON.stringify(result, null, 2));
+          fs.writeFileSync('news-cache.json', JSON.stringify(result, null, 2));
           console.log('Total: ' + unique.length + ' items saved');
           "
 
-      - name: 📤 提交并推送
+      - name: 📤 提交并推�?
         run: |
           git config user.name 'xiaolong-bot'
           git config user.email 'bot@xiaolong.finance'
-          git add public/news-cache.json
+          git add news-cache.json
           git diff --cached --quiet || git commit -m "🕐 新闻缓存 $(date -u '+%Y-%m-%d %H:00')"
           git push
